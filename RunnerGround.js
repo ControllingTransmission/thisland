@@ -6,12 +6,17 @@ var RunnerGround = function(){
 		var geometry = new THREE.PlaneGeometry( 10000, 10000, 32, 32 );
 
 		geometry.vertices[50].z += 1000
+		for(var i = 0; i <= 500; i++) {
+			geometry.faces[i].color.setHex( 0xff00ff );
+		}
+		geometry.colorsNeedUpdate = true;
 		var material = new THREE.MeshBasicMaterial( {
-			color: 0xffff00, 
+			// color: 0xffffff, 
 			side: THREE.DoubleSide,
-			wireframe: true,
+			// wireframe: true,
 			wireframeLinewidth: 2,
 			// vertexColors: THREE.Color( 0xff00ff ),
+			vertexColors: THREE.FaceColors,
 		} );
 		this.plane = new THREE.Mesh( geometry, material );
 		this.plane.rotateX( radians(-90) )
