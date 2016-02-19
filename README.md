@@ -2,6 +2,8 @@
 
 Draft repository for visuals scheduled on 3/15/16
 
+Requires SSL for microphone support. Run locally with `python server.py`
+
 ## TODO ideas
 
 * Gameboy object with visuals on screen
