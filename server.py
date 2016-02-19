@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 '''
 SimpleSecureHTTPServer.py - simple HTTP server supporting SSL.
 

@@ -1,5 +1,5 @@
 $(document).bind('keydown', 'space', function(e) {
-	$('#bandname').toggle();
+	runnerGround.rotateColorset(1);
 });
 
 $(document).bind('keydown', 'b', function(e) { 
