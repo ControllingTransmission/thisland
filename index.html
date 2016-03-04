@@ -18,7 +18,9 @@
 		<script src="js/jquery.hotkeys.js"></script>
 
 		<script src="js/three.min.js"></script>
-		<script src="js/OBJLoader.js"></script>
+		<script src="js/loaders/DDSLoader.js"></script>
+		<script src="js/loaders/MTLLoader.js"></script>
+		<script src="js/loaders/OBJLoader.js"></script>
 
     <script src="AudioContextMonkeyPatch.js"></script>
 		<script src="Spectrum.js"></script>
@@ -26,7 +28,8 @@
 		<script src="Trees.js"></script>
 		<script src="Planet.js"></script>
 		<script src="RunnerGround.js"></script>
-		<script src="Name.js"></script>
+		<script src="BandName.js"></script>
+		<script src="Gameboy.js"></script>
 		<script src="Skybox.js"></script>
 
 		<script src="hotkeys.js"></script>
@@ -133,8 +136,8 @@
 				light = null;
 				var object;
 
-				ambientLight = new THREE.AmbientLight( 0x404040 );
-				ambientLight.position.set( 0, 4000, 0 )
+				ambientLight = new THREE.AmbientLight( 0xffffff );
+				ambientLight.position.set( 0, 1000, 5000 )
 				scene.add( ambientLight );
 
 				spotLight = new THREE.SpotLight( 0xffffff );
@@ -150,6 +153,10 @@
 				spotLight.shadowCameraFov = 40;
 
 				scene.add( spotLight );
+
+				var light = new THREE.HemisphereLight( 0xffffff, 0x080820, 1 );
+				light.position.set( 0, 500, 3000 );
+				scene.add( light );
 
 				// light = new THREE.DirectionalLight( 0xffffff );
 				// light.position.set( 200, 2000, 3500 );
@@ -169,7 +176,10 @@
 
 				runnerGround = new RunnerGround().init();
 
-				name = new Name().init();
+				// bandname = new BandName().init();
+				// bandname.position.set(0, 1000, -2000)
+
+				gameboy = new Gameboy().init();
 
 				// planet = new Planet().init();
 
@@ -207,36 +217,8 @@
 				var timer = Date.now() *.009 
 
 				runnerGround.update(bins)
-				
-/*				for ( var i = 0; i < scene.children.length; i ++) 
-				{
-					var object = scene.children[i];
-					var x = object.position.x
-					var y = object.position.y
-
-
-					var r = Math.sqrt((x*x) + (y*y) +1)
-
-					if(bins){
-						for(var p=0; p<planets.length; p++){
-							planets[p].ground.step(bins, 0)
-						}
-					}
-				}
-*/
-/*				for(var p=0; p<planets.length; p++){
-					var planet = planets[p]
-					planet.rotation.x += planet.rotation.speed.x
-					planet.rotation.y += planet.rotation.speed.y
-					planet.rotation.z += planet.rotation.speed.z
-					for(var t=0; t<planet.trees.length; t++){
-						var tree = planet.trees[t]
-						// console.log(tree.rotation.speed.y)
-						tree.rotation.x += tree.rotation.speed.x
-						tree.rotation.y += tree.rotation.speed.y
-						tree.rotation.z += tree.rotation.speed.z
-					}
-				}*/
+				// bandname.update()
+				gameboy.update()
 
 				cameraCube.rotation.x += cameraCube.rotation.speed.x
 				cameraCube.rotation.y += cameraCube.rotation.speed.y

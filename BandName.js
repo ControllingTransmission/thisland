@@ -1,4 +1,4 @@
-var Name = function(){
+var BandName = function(){
   THREE.Object3D.apply(this, arguments);
   this.name = null;
   this.audioGain = 20;
@@ -35,32 +35,26 @@ var Name = function(){
       } );
 
       this.name = object;
+      object.position.x = -3.8;
+      object.position.y = -8
       this.add(object);
 
     }.bind(this), onProgress, onError );
 
-    
-    this.scale.x = 100;
-    this.scale.y = 100;
-    this.scale.z = 100;
+    this.scale.x = 1;
+    this.scale.y = 1;
+    this.scale.z = 1;
 
     scene.add(this);
 
     return this
   };
 
-  this.update = function(audioBin){
-    var g = this.plane.geometry;
-    for(var i=0; i<=(this.planeWidth+1)*20; i++) {
-      var row = i%(this.planeWidth+1);
-      var col = Math.floor(i/(this.planeWidth+1));
-      var x = audioBin[row*25+64] * this.audioGain / ((this.planeRandomization[i]+1)*col);
-      g.vertices[i].z = x;
-      // console.log(x);
-    }
-    g.verticesNeedUpdate = true;
+  this.update = function(){
+    // this.rotation.x += 0.05
+    // this.rotation.z += 0.05
   };
 
 }
-Name.prototype = Object.create(THREE.Object3D.prototype);
+BandName.prototype = Object.create(THREE.Object3D.prototype);
 // Planet.prototype.constructor = THREETree;

@@ -28,6 +28,7 @@ var RunnerGround = function(){
 		this.add( this.plane )
 
 		scene.add( this )
+		this.position.z = -5000
 
 		this.setColors(COLORSETS[this.colorSet]);
 
