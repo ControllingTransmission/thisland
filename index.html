@@ -25,12 +25,12 @@
     <script src="AudioContextMonkeyPatch.js"></script>
 		<script src="Spectrum.js"></script>
 
-		<script src="Trees.js"></script>
-		<script src="Planet.js"></script>
-		<script src="RunnerGround.js"></script>
-		<script src="BandName.js"></script>
-		<script src="Gameboy.js"></script>
-		<script src="Skybox.js"></script>
+		<script src="controllers/Trees.js"></script>
+		<script src="controllers/Planet.js"></script>
+		<script src="controllers/RunnerGround.js"></script>
+		<script src="controllers/BandName.js"></script>
+		<script src="controllers/Gameboy.js"></script>
+		<script src="controllers/Skybox.js"></script>
 
 		<script src="hotkeys.js"></script>
 		
@@ -136,7 +136,7 @@
 				light = null;
 				var object;
 
-				ambientLight = new THREE.AmbientLight( 0xffffff );
+				ambientLight = new THREE.AmbientLight( 0x404040 );
 				ambientLight.position.set( 0, 1000, 5000 )
 				scene.add( ambientLight );
 
@@ -154,7 +154,7 @@
 
 				scene.add( spotLight );
 
-				var light = new THREE.HemisphereLight( 0xffffff, 0x080820, 1 );
+				var light = new THREE.HemisphereLight( 0xcccccc, 0x080820, 1 );
 				light.position.set( 0, 500, 3000 );
 				scene.add( light );
 
@@ -176,8 +176,10 @@
 
 				runnerGround = new RunnerGround().init();
 
-				// bandname = new BandName().init();
-				// bandname.position.set(0, 1000, -2000)
+				bandname = new BandName(function(){console.log('loaded');}).init();
+				bandname.position.set(0, 1000, -2000)
+				bandname.scale.set(100, 100, 100)
+				scene.add(bandname)
 
 				gameboy = new Gameboy().init();
 

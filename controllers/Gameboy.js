@@ -46,16 +46,18 @@ var Gameboy = function(){
 
     }.bind(this));
 
-    b = new BandName().init();
-    // b.position.set(0, 0.7999999999999999, 0.26)
-    // b.scale.set(0.019999999999999997, 0.019999999999999997, 0.019999999999999997)
-    // b.name.position.set(-3.8, -8, -0.5)
+    b = new BandName(function() {
+      this.position.set(0, 0.7999999999999999, 0.25)
+      this.scale.set(0.019999999999999997, 0.019999999999999997, 0.019999999999999997)
+      this.name.position.set(-3.8, -8, -0.5)
+    }).init();
+
     this.bandname = b
     this.add(this.bandname);
 
     this.position.y = 140;
     this.position.z = 2300;
-    this.position.z = 200;
+    // this.position.z = 200;
 
     this.scale.x = 200;
     this.scale.y = 200;

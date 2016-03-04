@@ -1,20 +1,22 @@
-var BandName = function(){
+var BandName = function(onloaded){
   THREE.Object3D.apply(this, arguments);
   this.name = null;
+  this.model = null;
   this.audioGain = 20;
   this.colorSet = 0;
+  this.onloaded = (onloaded) ? onloaded : function(){};
 
-  var onProgress = function ( xhr ) {
-    if ( xhr.lengthComputable ) {
-      var percentComplete = xhr.loaded / xhr.total * 100;
-      console.log( Math.round(percentComplete, 2) + '% downloaded' );
-    }
-  };
+  this.loadModel = function(){
+    var onProgress = function ( xhr ) {
+      if ( xhr.lengthComputable ) {
+        var percentComplete = xhr.loaded / xhr.total * 100;
+        console.log( Math.round(percentComplete, 2) + '% downloaded' );
+      }
+    };
 
-  var onError = function ( xhr ) {
-  };
+    var onError = function ( xhr ) {
+    };
 
-  this.init = function(){
     var manager = new THREE.LoadingManager();
     manager.onProgress = function ( item, loaded, total ) {
 
@@ -34,18 +36,36 @@ var BandName = function(){
 
       } );
 
-      this.name = object;
       object.position.x = -3.8;
       object.position.y = -8
-      this.add(object);
+      BandName.model = object
+
+      this.orient();
 
     }.bind(this), onProgress, onError );
+  }
 
+  this.orient = function(){
     this.scale.x = 1;
     this.scale.y = 1;
     this.scale.z = 1;
 
-    scene.add(this);
+    this.name = BandName.model.clone()
+    this.add(BandName.model)
+
+    this.onloaded()
+  }
+
+  this.init = function(){
+
+
+    console.log('BandName.model', BandName.model);
+    if(BandName.model === undefined) { 
+      console.log('not loaded');
+      this.loadModel();
+    } else {
+      this.orient();
+    }
 
     return this
   };
