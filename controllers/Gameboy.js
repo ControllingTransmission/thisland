@@ -57,7 +57,7 @@ var Gameboy = function(){
 
     this.position.y = 140;
     this.position.z = 2300;
-    // this.position.z = 200;
+    this.position.z = 200;
 
     this.scale.x = 200;
     this.scale.y = 200;
