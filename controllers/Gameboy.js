@@ -3,6 +3,23 @@ var Gameboy = function(){
   this.bandname = null;
   this.audioGain = 20;
   this.colorSet = 0;
+  this.speed = {
+    rotation: {
+      x: 0,
+      y: 0.05,
+      z: 0
+    },
+    position: {
+      x: 0,
+      y: 0,
+      z: 0
+    },
+    scale: {
+      x: 0,
+      y: 0,
+      z: 0
+    }
+  }
 
   var onProgress = function ( xhr ) {
     if ( xhr.lengthComputable ) {
@@ -55,7 +72,10 @@ var Gameboy = function(){
     this.bandname = b
     this.add(this.bandname);
 
+    this.bandname.speed.rotation.z = 0.1
+
     this.position.y = 140;
+    this.position.y = 400;
     this.position.z = 2300;
     this.position.z = 200;
 
@@ -71,6 +91,11 @@ var Gameboy = function(){
   this.update = function(){
     // this.rotation.y += 0.05
     // this.rotation.z += 0.05
+    this.rotation.x += this.speed.rotation.x
+    this.rotation.y += this.speed.rotation.y
+    this.rotation.z += this.speed.rotation.z
+
+    this.bandname.update()
   };
 
 }

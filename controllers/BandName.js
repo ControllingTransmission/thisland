@@ -5,6 +5,23 @@ var BandName = function(onloaded){
   this.audioGain = 20;
   this.colorSet = 0;
   this.onloaded = (onloaded) ? onloaded : function(){};
+  this.speed = {
+    rotation: {
+      x: 0,
+      y: 0,
+      z: 0
+    },
+    position: {
+      x: 0,
+      y: 0,
+      z: 0
+    },
+    scale: {
+      x: 0,
+      y: 0,
+      z: 0
+    }
+  }
 
   this.loadModel = function(){
     var onProgress = function ( xhr ) {
@@ -73,6 +90,9 @@ var BandName = function(onloaded){
   this.update = function(){
     // this.rotation.x += 0.05
     // this.rotation.z += 0.05
+    this.rotation.x += this.speed.rotation.x
+    this.rotation.y += this.speed.rotation.y
+    this.rotation.z += this.speed.rotation.z
   };
 
 }
