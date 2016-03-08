@@ -1,28 +1,10 @@
 var BandName = function(onloaded){
   THREE.Object3D.apply(this, arguments);
-  this.renderOn = true;
   this.name = null;
   this.model = null;
   this.audioGain = 20;
   this.colorSet = 0;
   this.onloaded = (onloaded) ? onloaded : function(){};
-  this.speed = {
-    rotation: {
-      x: 0,
-      y: 0,
-      z: 0
-    },
-    position: {
-      x: 0,
-      y: 0,
-      z: 0
-    },
-    scale: {
-      x: 0,
-      y: 0,
-      z: 0
-    }
-  }
 
   this.loadModel = function(){
     var onProgress = function ( xhr ) {
@@ -64,15 +46,12 @@ var BandName = function(onloaded){
   }
 
   this.orient = function(){
-    // this.scale.x = 1;
-    // this.scale.y = 1;
-    // this.scale.z = 1;
+    this.scale.x = 1;
+    this.scale.y = 1;
+    this.scale.z = 1;
 
-    this.bandname = BandName.model.clone()
-    for(var child in BandName.model.children) {
-      this.bandname.children[child].material = BandName.model.children[child].material.clone()
-    }
-    this.add(this.bandname)
+    this.name = BandName.model.clone()
+    this.add(this.name)
 
     this.onloaded()
   }
@@ -94,9 +73,6 @@ var BandName = function(onloaded){
   this.update = function(){
     // this.rotation.x += 0.05
     // this.rotation.z += 0.05
-    this.rotation.x += this.speed.rotation.x
-    this.rotation.y += this.speed.rotation.y
-    this.rotation.z += this.speed.rotation.z
   };
 
 }

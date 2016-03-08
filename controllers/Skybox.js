@@ -1,10 +1,15 @@
 function initSkybox(){
+	var urlPrefixes = [
+		"img/painted-",
+		"img/painted2-",
+		"img/painted3-"
+	]
 	// var urlPrefix = "img/s_";
 	// var urls = [ urlPrefix + "px.jpg", urlPrefix + "nx.jpg",
 	//     urlPrefix + "py.jpg", urlPrefix + "ny.jpg",
 	//     urlPrefix + "pz.jpg", urlPrefix + "nz.jpg" ];
 
-	var urlPrefix = "img/painted3-";
+	var urlPrefix = urlPrefixes[2];
 	var urls = [ urlPrefix + "01.png", urlPrefix + "02.png",
 	    urlPrefix + "03.png", urlPrefix + "04.png",
 	    urlPrefix + "05.png", urlPrefix + "06.png" ];

@@ -1,12 +1,17 @@
 var Gameboy = function(){
   THREE.Object3D.apply(this, arguments);
+  this.renderOn = true;
+  this.model = null;
+  this.materials = null;
   this.bandname = null;
+  this.gameboy = null;
   this.audioGain = 20;
   this.colorSet = 0;
   this.speed = {
     rotation: {
       x: 0,
       y: 0.05,
+      // y: 0,
       z: 0
     },
     position: {
@@ -21,19 +26,7 @@ var Gameboy = function(){
     }
   }
 
-  var onProgress = function ( xhr ) {
-    if ( xhr.lengthComputable ) {
-      var percentComplete = xhr.loaded / xhr.total * 100;
-      console.log( Math.round(percentComplete, 2) + '% downloaded' );
-    }
-  };
-
-  var onError = function ( xhr ) {
-  };
-
-  this.init = function(){
-    // model
-
+  this.loadModel = function() {
     var onProgress = function ( xhr ) {
       if ( xhr.lengthComputable ) {
         var percentComplete = xhr.loaded / xhr.total * 100;
@@ -50,26 +43,52 @@ var Gameboy = function(){
     mtlLoader.setPath( 'models/gameboy/' );
     mtlLoader.load( 'gameboy.mtl', function( materials ) {
 
+      console.log(materials);
       materials.preload();
+      console.log(materials);
+      Gameboy.materials = materials
 
       var objLoader = new THREE.OBJLoader();
-      objLoader.setMaterials( materials );
+      objLoader.setMaterials( Gameboy.materials );
       objLoader.setPath( 'models/gameboy/' );
       objLoader.load( 'gameboy.obj', function ( object ) {
         object.position.y = -1.7;
-        this.add( object );
+        Gameboy.model = object;
+        this.orient();
 
       }.bind(this), onProgress, onError );
 
     }.bind(this));
+  }
 
-    b = new BandName(function() {
+  this.orient = function() {
+    console.log('GAMEBOY ORIENT', Gameboy.materials);
+    this.gameboy = Gameboy.model.clone()
+    for(var child in Gameboy.model.children) {
+      this.gameboy.children[child].material = Gameboy.model.children[child].material.clone()
+    }
+    this.add( this.gameboy );
+  }
+
+  this.colorize = function(bodyColor) {
+    this.gameboy.children[3].material.color = new THREE.Color(bodyColor)
+  }
+
+  this.init = function() {
+
+    if(Gameboy.model === undefined) { 
+      console.log('not loaded');
+      this.loadModel();
+    } else {
+      this.orient();
+    }
+
+    this.bandname = new BandName(function() {
       this.position.set(0, 0.7999999999999999, 0.25)
       this.scale.set(0.019999999999999997, 0.019999999999999997, 0.019999999999999997)
-      this.name.position.set(-3.8, -8, -0.5)
+      // this.bandname.position.set(-3.8, -8, -0.5)
     }).init();
 
-    this.bandname = b
     this.add(this.bandname);
 
     this.bandname.speed.rotation.z = 0.1
@@ -94,6 +113,9 @@ var Gameboy = function(){
     this.rotation.x += this.speed.rotation.x
     this.rotation.y += this.speed.rotation.y
     this.rotation.z += this.speed.rotation.z
+    this.position.x += this.speed.position.x
+    this.position.y += this.speed.position.y
+    this.position.z += this.speed.position.z
 
     this.bandname.update()
   };
