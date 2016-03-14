@@ -42,7 +42,7 @@ class SecureHTTPRequestHandler(SimpleHTTPRequestHandler):
 
 def test(HandlerClass = SecureHTTPRequestHandler,
          ServerClass = SecureHTTPServer):
-    server_address = ('', 443) # (address, port)
+    server_address = ('', 9000) # (address, port)
     httpd = ServerClass(server_address, HandlerClass)
     sa = httpd.socket.getsockname()
     print "Serving HTTPS on", sa[0], "port", sa[1], "..."
