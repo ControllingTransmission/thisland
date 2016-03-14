@@ -45,10 +45,8 @@ var AudioLine = function(onloaded){
       var row = i%(this.planeWidth+1);
       var col = Math.floor(i/(this.planeWidth+1));
       var x = (audioBin[row*25 + 64] - 50) * this.audioGain / 200;
-      console.log(x);
       g.vertices[i].y = x;
       g.vertices[i+this.planeWidth].y = x - 1;
-      // console.log(x);
     }
     g.verticesNeedUpdate = true;
   };
