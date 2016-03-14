@@ -10,8 +10,8 @@ var Gameboy = function(){
   this.speed = {
     rotation: {
       x: 0,
-      y: 0.05,
-      // y: 0,
+      // y: 0.05,
+      y: 0,
       z: 0
     },
     position: {
@@ -67,6 +67,7 @@ var Gameboy = function(){
     for(var child in Gameboy.model.children) {
       this.gameboy.children[child].material = Gameboy.model.children[child].material.clone()
     }
+    this.gameboy.children[3].material.side = THREE.DoubleSide
     this.add( this.gameboy );
   }
 
@@ -91,12 +92,12 @@ var Gameboy = function(){
 
     this.add(this.bandname);
 
-    this.bandname.speed.rotation.z = 0.1
+    // this.bandname.speed.rotation.z = 0.1
 
     this.position.y = 140;
-    this.position.y = 400;
+    // this.position.y = 400;
     this.position.z = 2300;
-    this.position.z = 200;
+    // this.position.z = 200;
 
     this.scale.x = 200;
     this.scale.y = 200;
