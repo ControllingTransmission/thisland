@@ -11,6 +11,26 @@ var runnerGroundCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   },
+  {
+    "keys"          : "m",
+    "is_exclusive"  : true,
+    "on_keydown"    : function() {
+      var tween = new TWEEN.Tween(gameboy.position)
+        .to({ z: -500 }, 2000)
+        .easing(TWEEN.Easing.Quadratic.In)
+        .onComplete(function(){
+          gameboy.speed.rotation.y = 0.01
+        })
+        .start();
+      var tween2 = new TWEEN.Tween(gameboy.position)
+        .to({ y: 400 }, 2000)
+        // .easing(TWEEN.Easing.Exponential.In)
+        .start();
+      gameboy.bandname.bandname.position.z = 0.5
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
 	{
     "keys"          : "w",
     "is_exclusive"  : true,
@@ -78,7 +98,19 @@ var runnerGroundCombos = listener.register_many([
     "on_keydown"    : function() {
     	console.log('remove');
     	var g = gameboys.pop()
-    	g.remove()
+    	scene.remove(g)
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  {
+    "keys"          : "h",
+    "is_exclusive"  : true,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+        console.log('remove');
+        var g = gameboys.pop()
+        g.remove()
     },
     "on_keyup"      : function(e) {
     }

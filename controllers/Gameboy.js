@@ -5,12 +5,12 @@ var Gameboy = function(){
   this.materials = null;
   this.bandname = null;
   this.gameboy = null;
+  this.audioLines = []
   this.audioGain = 20;
   this.colorSet = 0;
   this.speed = {
     rotation: {
       x: 0,
-      // y: 0.05,
       y: 0,
       z: 0
     },
@@ -85,19 +85,29 @@ var Gameboy = function(){
     }
 
     this.bandname = new BandName(function() {
-      this.position.set(0, 0.7999999999999999, 0.25)
-      this.scale.set(0.019999999999999997, 0.019999999999999997, 0.019999999999999997)
+      this.position.set(0, 0.7999999999999999, 0.3)
+      this.scale.set(0.019999999999999997, 0.019999999999999997, 0.000001)
       // this.bandname.position.set(-3.8, -8, -0.5)
     }).init();
 
     this.add(this.bandname);
 
+    var audioLine = new AudioLine(function() {
+      this.position.set(0.03100000000000005, 0.7999999999999999, 0.3)
+      this.scale.set(0.0219, 0.019999999999999997, 0.019999999999999997)
+    }).init();
+
+    this.audioLines.push(audioLine)
+
+    this.add(audioLine)
+
     // this.bandname.speed.rotation.z = 0.1
 
     this.position.y = 140;
-    // this.position.y = 400;
     this.position.z = 2300;
-    // this.position.z = 200;
+
+    // this.position.y = 400;
+    // this.position.z = 2000;
 
     this.scale.x = 200;
     this.scale.y = 200;
@@ -108,7 +118,7 @@ var Gameboy = function(){
     return this
   };
 
-  this.update = function(){
+  this.update = function(audioBin){
     // this.rotation.y += 0.05
     // this.rotation.z += 0.05
     this.rotation.x += this.speed.rotation.x
@@ -119,6 +129,10 @@ var Gameboy = function(){
     this.position.z += this.speed.position.z
 
     this.bandname.update()
+    for(var l in this.audioLines) {
+      var line = this.audioLines[l]
+      line.update(audioBin);
+    }
   };
 
 }
