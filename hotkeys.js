@@ -15,10 +15,10 @@ var runnerGroundCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.z += -10
+      camera.speed.position.z -= 100
     },
     "on_keyup"      : function(e) {
-    	camera.speed.position.z -= -10
+    	camera.speed.position.z += 100
     }
   },
 	{
@@ -26,10 +26,10 @@ var runnerGroundCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.z += +10
+      camera.speed.position.z += +100
     },
     "on_keyup"      : function(e) {
-    	camera.speed.position.z -= +10
+    	camera.speed.position.z -= +100
     }
   },
 	{
@@ -37,10 +37,10 @@ var runnerGroundCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.x -= +10
+      camera.speed.position.x -= +100
     },
     "on_keyup"      : function(e) {
-    	camera.speed.position.x += +10
+    	camera.speed.position.x += +100
     }
   },
 	{
@@ -48,10 +48,10 @@ var runnerGroundCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.x += +10
+      camera.speed.position.x += +100
     },
     "on_keyup"      : function(e) {
-    	camera.speed.position.x -= +10
+    	camera.speed.position.x -= +100
     }
   },
   {

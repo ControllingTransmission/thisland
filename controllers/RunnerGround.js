@@ -25,9 +25,10 @@ var RunnerGround = function(){
 		} );
 		this.plane = new THREE.Mesh( geometry, material );
 		this.plane.rotateX( radians(-90) )
+		
 		this.add( this.plane )
 
-		scene.add( this )
+		//scene.add( this )
 		this.position.z = -1000
 
 		this.setColors(COLORSETS[this.colorSet]);
