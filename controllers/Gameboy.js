@@ -75,6 +75,53 @@ var Gameboy = function(){
     this.gameboy.children[3].material.color = new THREE.Color(bodyColor)
   }
 
+  this.colorizeScreen = function(screenColor) {
+    var c = this.gameboy.children[4].material.color;
+    c.set(screenColor)
+    c.r += 1.5
+    c.g += 1.5
+    c.b += 1.5
+  }
+
+  this.resetScreen = function() {
+
+  }
+
+  this.addBandname = function() {
+    this.bandname = new BandName(function() {
+      this.position.set(0, 0.7999999999999999, 0.3)
+      this.scale.set(0.019999999999999997, 0.019999999999999997, 0.000001)
+      // this.bandname.position.set(-3.8, -8, -0.5)
+    }).init();
+
+    this.add(this.bandname);
+  }
+
+  this.addAudioline = function(position) {
+    if(position) {
+      var position = {
+        x: (position.x) ? position.x : 0.03100000000000005,
+        y: (position.y) ? position.y : 0.8,
+        z: (position.z) ? position.z : 0.3
+      }
+    } else {
+      var position = {
+        x: 0.03100000000000005,
+        y: 0.8,
+        z: 0.3
+      }
+    }
+    var audioLine = new AudioLine(function() {
+      this.position.set(position.x, position.y, position.z)
+      this.scale.set(0.0219, 0.019999999999999997, 0.019999999999999997)
+    }).init();
+
+    this.audioLines.push(audioLine)
+
+    this.add(audioLine)
+  }
+
+
   this.init = function() {
 
     if(Gameboy.model === undefined) { 
@@ -84,22 +131,8 @@ var Gameboy = function(){
       this.orient();
     }
 
-    this.bandname = new BandName(function() {
-      this.position.set(0, 0.7999999999999999, 0.3)
-      this.scale.set(0.019999999999999997, 0.019999999999999997, 0.000001)
-      // this.bandname.position.set(-3.8, -8, -0.5)
-    }).init();
-
-    this.add(this.bandname);
-
-    var audioLine = new AudioLine(function() {
-      this.position.set(0.03100000000000005, 0.7999999999999999, 0.3)
-      this.scale.set(0.0219, 0.019999999999999997, 0.019999999999999997)
-    }).init();
-
-    this.audioLines.push(audioLine)
-
-    this.add(audioLine)
+    this.addBandname();
+    this.addAudioline();
 
     // this.bandname.speed.rotation.z = 0.1
 
@@ -128,7 +161,9 @@ var Gameboy = function(){
     this.position.y += this.speed.position.y
     this.position.z += this.speed.position.z
 
-    this.bandname.update()
+    if(this.bandname) {
+      this.bandname.update()
+    }
     for(var l in this.audioLines) {
       var line = this.audioLines[l]
       line.update(audioBin);

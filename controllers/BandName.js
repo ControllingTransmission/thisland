@@ -79,8 +79,6 @@ var BandName = function(onloaded){
 
   this.init = function(){
 
-
-    console.log('BandName.model', BandName.model);
     if(BandName.model === undefined) { 
       console.log('not loaded');
       this.loadModel();

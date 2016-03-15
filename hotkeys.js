@@ -26,58 +26,111 @@ var runnerGroundCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   },
+])
+
+
+function addGameboy(){
+  console.log('add');
+  var gl = gameboys.length
+  if(gameboys[0]) {
+    var g0 = gameboys[0]
+    var g = new Gameboy().init();
+    g.colorize(COLORSETS[4][gl%COLORSETS[4].length])
+    g.position.x = g0.position.x
+    g.position.y = g0.position.y
+    g.position.z = g0.position.z
+    g.rotation.x = g0.rotation.x
+    g.rotation.y = g0.rotation.y
+    g.rotation.z = g0.rotation.z
+    g.scale.x =    g0.scale.x
+    g.scale.y =    g0.scale.y
+    g.scale.z =    g0.scale.z
+    g.speed.position.x = g0.speed.position.x
+    g.speed.position.y = g0.speed.position.y
+    g.speed.position.z = g0.speed.position.z
+    g.speed.rotation.x = g0.speed.rotation.x
+    g.speed.rotation.y = g0.speed.rotation.y
+    g.speed.rotation.z = g0.speed.rotation.z
+    g.speed.scale.x =    g0.speed.scale.x
+    g.speed.scale.y =    g0.speed.scale.y
+    g.speed.scale.z =    g0.speed.scale.z
+  }
+  else {
+    var g = new Gameboy().init();
+  }
+  gameboys.push(g)
+  return g
+}
+
+
+
+var gameboyCombos = listener.register_many([
   {
-    "keys"          : "m",
+    "keys"          : "1 m",
     "is_exclusive"  : true,
     "on_keydown"    : function() {
-      var tween = new TWEEN.Tween(gameboy.position)
+      var tween = new TWEEN.Tween(gameboys[0].position)
         .to({ z: -500 }, 2000)
         .easing(TWEEN.Easing.Quadratic.In)
         .onComplete(function(){
-          gameboy.speed.rotation.y = 0.01
+          gameboys[0].speed.rotation.y = 0.01
         })
         .start();
-      var tween2 = new TWEEN.Tween(gameboy.position)
+      var tween2 = new TWEEN.Tween(gameboys[0].position)
         .to({ y: 400 }, 2000)
         // .easing(TWEEN.Easing.Exponential.In)
         .start();
-      gameboy.bandname.bandname.position.z = 0.5
-      gameboy.bandname.bandname.scale.z = 0.5
+      gameboys[0].bandname.bandname.position.z = 0.5
+      gameboys[0].bandname.bandname.scale.z = 0.5
     },
     "on_keyup"      : function(e) {
     }
   },
-
   {
-    "keys"          : "g =",
+    "keys"          : "1 b",
+    "is_exclusive"  : true,
+    "prevent_repeat": false,
+    "on_keydown"    : function() {
+      for(var g in gameboys) {
+        var gameboy = gameboys[g]
+        if(gameboy.bandname) {
+          gameboy.remove(gameboy.bandname)
+          scene.remove(gameboy.bandname)
+          gameboy.bandname = null
+        } else {
+          gameboy.addBandname()
+        }
+      }
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  {
+    "keys"          : "1 =",
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-    	console.log('add');
-    	var g = new Gameboy().init();
-    	var gl = gameboys.length
-    	console.log((gl%2)?1:-1);
-    	g.position.x = (gl+1) * 500 * ((gl%2)?-1:1)
-    	g.colorize(COLORSETS[4][gl%COLORSETS[4].length])
-    	gameboys.push(g)
+      var g = addGameboy();
+      var gl = gameboys.length
+      positionGameboy(g);
     },
     "on_keyup"      : function(e) {
     }
   },
   {
-    "keys"          : "g -",
+    "keys"          : "1 -",
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-    	console.log('remove');
-    	var g = gameboys.pop()
-    	scene.remove(g)
+      console.log('remove');
+      var g = gameboys.pop()
+      scene.remove(g)
     },
     "on_keyup"      : function(e) {
     }
   },
   {
-    "keys"          : "g 0",
+    "keys"          : "1 0",
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -91,7 +144,37 @@ var runnerGroundCombos = listener.register_many([
     }
   },
 
+  {
+    "keys"          : "1 o",
+    "is_exclusive"  : true,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+      console.log('hi');
+      for(var g in gameboys) {
+        var gameboy = gameboys[g]
+        gameboy.colorizeScreen(COLORSETS[4][0])
+      }
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
 
+  {
+    "keys"          : "1 l",
+    "is_exclusive"  : true,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+      for(var g in gameboys) {
+        var gameboy = gameboys[g]
+        var als = gameboy.audioLines
+        var v = [1, -1]
+
+        gameboy.addAudioline({y: 0.8 + 0.1 * v[(als.length+1) % 2] * Math.floor(als.length/2)});
+      }
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
 ])
 
 var movementCombos = listener.register_many([
