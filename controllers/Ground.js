@@ -11,9 +11,12 @@ Block = ideal.Proto.extend().newSlots({
 	audioGain: 20,
 	sectionPos: null,
 	rand: null,
+	mode: "equalizer", // "wave", "wave2", "equalizer", "rand"
+	
 }).setSlots({
     init: function () {
-        this._rand = Math.random()
+        this._rand = Math.random() *.8 + .2
+        this._planeWidth = Spectrum._fftSize
         
         this._geometry = new THREE.PlaneGeometry( 
             this.blockSize(), this.blockSize(), 
@@ -42,29 +45,29 @@ Block = ideal.Proto.extend().newSlots({
         this._mesh = new THREE.Mesh( this._geometry, this._material );
 		
 		this._mesh.rotateX( radians(-90) )
-		
-		var i = Math.floor(Math.random() * COLORSETS.length)
-		this.setColors(COLORSETS[i]);
+	
+    },
+    
+    colorForIndex: function (i) {
+		var color = new THREE.Color(this._colorset[Math.floor(i/(this.planeWidth()*2)/5)]);
+		var hsl = color.getHSL();   
+		return hsl     
     },
     
     updateColors: function() {
 		var i = Math.abs(this.sectionPos().z) % COLORSETS.length
-		this.setColors(COLORSETS[i]);
-		return this        
-    },
-    
-	setColors: function(colorset) {
+		this._colorset = COLORSETS[i]
+		
 		var geometry = this._mesh.geometry;
 		var length = geometry.faces.length;
 		for(var i = 0; i < length; i++) {
-			var color = new THREE.Color(colorset[Math.floor(i/(this.planeWidth()*2)/5)]);
-			var hsl = color.getHSL();
-			//console.log(hsl.h, hsl.s, hsl.l + Math.random()*0.05)
+			var hsl = this.colorForIndex(i)
 			geometry.faces[i].color.setHSL(hsl.h, hsl.s, hsl.l - Math.random()*0.07)
 		}
 		geometry.colorsNeedUpdate = true;
 	},
 
+    
         
 	add: function()
 	{
@@ -104,48 +107,87 @@ Block = ideal.Proto.extend().newSlots({
         return this
     },
 
+/*
     shouldUpdateAudio: function() {
 	    var sp = this.sectionPos()
 	    return sp.x % 2 == 0 && sp.z % 2 == 0        
     },
-
+*/
 	updateAudio: function(audioBins, t) {
-	    var audioBins = Spectrum._beatByteData
-	    //console.log(audioBins)
-        //if (!this.shouldUpdateAudio()) { return }
+
 	        
 		var g = this._geometry
 		var pw = this.planeWidth()+1
 		var p = this._mesh.position
 		var bs = this.blockSize()
 		
-		for(var y = 0; y < 3; y ++) {
+		var ymax = pw
+		for(var y = 0; y < ymax; y ++) {
 		    for(var x = 0; x < pw; x ++) {
 		        var i = y*pw + x
-		        
-		        /*
-		        var dx = (x - pw/2)/pw
-		        var dy = (y - pw/2)/pw
-		        var d = Math.sqrt(dx*dx + dy*dy)
-		        */
-		        //var b = Math.floor(audioBin.length * y / pw )
-		        //var b = Math.floor(audioBin.length * Math.abs(x / pw) )
-		        var b = Math.floor(audioBins.length * x / pw )
-		        //var b = Math.floor(audioBins.length * this._rand)
-		        //var b = Math.floor(audioBin.length * d )
-    			var v = audioBins[b]/6
-//                v /= (y+1)
-                var damp = Math.sin( Math.PI * x / pw + Math.PI * y / pw) 
-                //var damp = 1/Math.abs((x - pw/2)/(pw/2)) 
-                v =  audioBins[b] * 1000
-    			g.vertices[i].z = v// * damp
-
+                
     			
-    			/*
-    			var wx = p.x + bs * x/pw
-    			var wy = p.y + bs * y/pw 
-    			//g.vertices[i].z = Math.sin(Math.sqrt(wx*wx + wy*wy)/1000)*300
-    			*/
+    			if (this._mode == "wave") {
+    			    
+    			    g.vertices[i].z = Math.sin(2*Math.PI*y/(pw-1) + 2*Math.PI*x/(pw-1) + t/20)*400 
+ 
+                } else if (this._mode == "wave2")  {
+                    
+    			   g.vertices[i].z = Math.cos(2*Math.PI*y/(pw-1) - 2*Math.PI*x/(pw-1) + t/20)*400 
+
+                } else if (this._mode == "colors")  {
+                    
+    			    var hsl = this.colorForIndex(i)
+    			    g.faces[i].color.setHSL(hsl.h, hsl.s, hsl.l - Math.random()*0.07)
+		            g.colorsNeedUpdate = true;
+		            
+                } else if (this._mode == "rand")  {
+
+    			    g.vertices[i].z = Math.random()*400 
+ 			        //geometry.faces[i].color.setHSL(hsl.h, hsl.s, hsl.l - Math.random()*0.07)
+                                          			    
+                } else if (this._mode == "rand")  {
+                    
+    			    g.vertices[i].z = Math.random()*400 
+                    
+                } else if (this._mode == "equalizer")  {
+                    
+                    var r = x/(pw -1)
+		        
+    		        if (x/pw > .5) {
+    		            // map .5 -> 1 to 0 -> 1
+    		           r = 2 * (r - .5)
+    		        } else {
+    		            // map 0 -> .5 to 1 -> 0
+    		            r = 1 - r * 2
+    		        }
+		        
+    		        r = r*.5
+		        
+    		        if (r < 0 || r > 1) {
+    		            throw "invalid r " + r
+    		        }
+		        
+    		        var b = Math.floor((audioBins.length - 1) * r)
+		        
+        			var v = Math.pow(audioBins[b] * 4, 1.4)
+        			var ydamp = 1/(1 + Math.abs(ymax/2 - y))
+                    v = v * ydamp
+                
+    			    g.vertices[i].z = v 
+
+/*
+                    if (true) {
+                        var val = v /1000
+                        if (v > 1) { v = 1 }
+                        
+        			    var hsl = this.colorForIndex(i)
+        			    g.faces[i].color.setHSL(hsl.h, hsl.s , hsl.l - v)
+    		            g.colorsNeedUpdate = true;
+	                }
+	                */
+                }
+
 		    }
 		}
 		
@@ -172,7 +214,8 @@ Ground = ideal.Proto.extend().newSlots({
     
     updateAudio: function(audioBin) {
         this._t ++
-        this.blocks().forEach(function (block) { block.updateAudio(audioBin, this._t) })
+        var self = this
+        this.blocks().forEach(function (block) { block.updateAudio(audioBin, self._t) })
         return this
     },
     

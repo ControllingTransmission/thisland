@@ -2,6 +2,7 @@
 Spectrum = {
     _sumPeak: 0,
     _isBeat: false,
+    _fftSize: 32,
     
 	timeStep: function() 
 	{
@@ -9,14 +10,21 @@ Spectrum = {
 		    return 
 		}
 		
-        //var freqByteData = new Uint8Array(this._analyserNode.fftSize);
         this._analyserNode.getByteFrequencyData(this._freqByteData); 
+		
 		
 		var sum = this._freqByteData.reduce(function(previousValue, currentValue, index, array) {
             return previousValue + currentValue;
         });
 
         for (var i = 0; i < this._freqByteData.length; i ++) {
+            
+            /*
+    		if (isNaN(this._freqByteData[0])) { 
+    		    this._freqByteData[0] = 0; 
+    		}
+    		*/
+		
             var isBeat = (this._freqByteData[i] > this._peakByteData[i] * .9)
             this._beatByteData[i] = isBeat ? 1 : 0
             /*
@@ -56,7 +64,8 @@ Spectrum = {
 	    this._audioInput.connect(this._inputPoint);
 
 	    this._analyserNode = this._audioContext.createAnalyser();
-	    var size = 128
+
+        var size = this._fftSize
 	    this._analyserNode.fftSize = size;
         this._freqByteData = new Uint8Array(size);
         this._peakByteData = new Uint8Array(size);
