@@ -64,8 +64,8 @@ var Gameboy = function(){
   this.orient = function() {
     console.log('GAMEBOY ORIENT', Gameboy.materials);
     this.gameboy = Gameboy.model.clone()
-    for(var child in Gameboy.model.children) {
-      this.gameboy.children[child].material = Gameboy.model.children[child].material.clone()
+    for(var c=0; c<Gameboy.model.children.length; c++) {
+      this.gameboy.children[c].material = Gameboy.model.children[c].material.clone()
     }
     this.gameboy.children[3].material.side = THREE.DoubleSide
     this.add( this.gameboy );
@@ -164,7 +164,7 @@ var Gameboy = function(){
     if(this.bandname) {
       this.bandname.update()
     }
-    for(var l in this.audioLines) {
+    for(var l=0; l<this.audioLines.length; l++) {
       var line = this.audioLines[l]
       line.update(audioBin);
     }
