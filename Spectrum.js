@@ -4,6 +4,10 @@ Spectrum = {
     _isBeat: false,
     _fftSize: 32,
     
+    audioBin: function() {
+        return this._freqByteData
+    },
+    
 	timeStep: function() 
 	{
 		if (this._analyserNode == null) { 
@@ -44,7 +48,7 @@ Spectrum = {
    
         if (sum > this._sumPeak * .9) {
             this._isBeat = true
-            console.log("beat!")
+         //   console.log("beat!")
         }
         
         if (this._sumPeak < sum) {

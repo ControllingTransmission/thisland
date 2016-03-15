@@ -416,7 +416,7 @@ var movementCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      Ground.setMode("random")
+      Ground.setMode("spikewaves")
     },
     "on_keyup"      : function(e) {
     }
@@ -425,6 +425,29 @@ var movementCombos = listener.register_many([
    
     {
     "keys"          : ",",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+      Ground.setMode("other")
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  
+     {
+    "keys"          : ".",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+      Ground.setMode("pause")
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  
+   
+     {
+    "keys"          : "/",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {

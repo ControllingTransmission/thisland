@@ -152,7 +152,8 @@ var Gameboy = function(){
     return this
   };
 
-  this.update = function(audioBin){
+  this.update = function() {
+     var audioBin = Spectrum.audioBin()
     // this.rotation.y += 0.05
     // this.rotation.z += 0.05
     this.rotation.x += this.speed.rotation.x
