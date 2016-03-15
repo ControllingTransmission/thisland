@@ -1,6 +1,5 @@
 var listener = new window.keypress.Listener();
 
-var speedScale = 100
 var runnerGroundCombos = listener.register_many([
   {
     "keys"          : "space",
@@ -280,6 +279,9 @@ var gameboyBandnameCombos = listener.register_many([
   },  
 ])
 
+
+var speedScale = 100
+var rotationScale = 0.01
 var movementCombos = listener.register_many([
   {
     "keys"          : "w",
@@ -308,10 +310,10 @@ var movementCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.x -= +speedScale
+      camera.speed.rotation.y += +rotationScale
     },
     "on_keyup"      : function(e) {
-      camera.speed.position.x += +speedScale
+      camera.speed.rotation.y -= +rotationScale
     }
   },
   {
@@ -319,10 +321,10 @@ var movementCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.x += +speedScale
+      camera.speed.rotation.y -= +rotationScale
     },
     "on_keyup"      : function(e) {
-      camera.speed.position.x -= +speedScale
+      camera.speed.rotation.y += +rotationScale
     }
   },
 
