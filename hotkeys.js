@@ -59,12 +59,12 @@ function addGameboy(){
   else {
     var g = new Gameboy().init();
   }
-  gameboys.push(g)
+  //gameboys.push(g)
   return g
 }
 
 
-
+/*
 var gameboyCombos = listener.register_many([
   {
     "keys"          : "1 m",
@@ -279,6 +279,7 @@ var gameboyBandnameCombos = listener.register_many([
     }
   },  
 ])
+*/
 
 var movementCombos = listener.register_many([
   {

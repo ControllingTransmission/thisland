@@ -13,6 +13,8 @@ Block = ideal.Proto.extend().newSlots({
 	rand: null,
 	ground: null,
 	isCameraSection: false,
+	gameboy: null,
+	bandname: null,
 }).setSlots({
     init: function () {
         this._rand = Math.random() *.8 + .2
@@ -48,16 +50,35 @@ Block = ideal.Proto.extend().newSlots({
 		
 		
 		this._mesh.rotateX( radians(-90) )
-	
+
 	    if (Math.random() < .3) {
-    	    this._gameboy = addGameboy()
-    	    this.scene().remove(this._gameboy)
-    		this._gameboy.rotateX( radians(45) )
-    		this._gameboy.position.z = 840
-    		this._gameboy.position.y = -2000
-	    
-    	    this._mesh.add(this._gameboy)
+    	    this.addGameboy()
+        } 
+        else if (Math.random() < .3) {
+    	    this.addBandName()
         }
+        
+    },
+
+    addGameboy: function () {
+	    this._gameboy = addGameboy()
+        //this.scene().remove(this._gameboy)
+		this._gameboy.rotateX( radians(80) )
+		this._gameboy.position.z = 840
+		this._gameboy.position.y = -2000
+	    this._mesh.add(this._gameboy)
+    	return this
+    },
+    
+    addBandName: function () {
+      	var bn = new BandName(function(){console.log('loaded');}).init();
+		bn.position.set(0, 0, 1000)
+		bn.scale.set(100, 100, 100)
+		bn.rotateX( radians(80) )
+		bn.needsUpdate = true
+    	this._mesh.add(bn)
+    	this._bandname = bn
+    	return this
     },
     
     
@@ -91,9 +112,11 @@ Block = ideal.Proto.extend().newSlots({
 	{
 		this.scene().remove(this.mesh())
 		
+		/*
 		if (this._gameboy) {   
 		    this._gameboy.remove()
 		}
+		*/
 		return this
 	},
 
@@ -172,7 +195,6 @@ Block = ideal.Proto.extend().newSlots({
     			    //g.vertices[i].z += Math.sin(2*Math.PI*y/(pw-1) - 2*Math.PI*x/(pw-1) + t/20)*400 
                                           			    
                 } else if (mode == "other")  {
-                    
     			    
     			    var v = 0
     			    v = Math.sin(2*Math.PI*y/(pw-1) + t/25) 
@@ -234,12 +256,15 @@ Block = ideal.Proto.extend().newSlots({
 
 // ----------------------------------------------------------
 
+//Ground.currentBlock().gameboy()
+
 
 Ground = ideal.Proto.extend().newSlots({
     type: "Ground",
     blocks: null,
     t: 0,
 	mode: "wave", // "wave", "wave2", "equalizer", "random", "pause"
+	currentBlock: null,
 }).setSlots({
     init: function () {
         this.setBlocks([])
@@ -320,10 +345,14 @@ Ground = ideal.Proto.extend().newSlots({
             
             var same = dx == 0 && dz == 0
             block.setIsCameraSection(same)
+            
+            if (same) { 
+                self.setCurrentBlock(block) 
+            }
         })
           
     },
-
+    
     update: function () {
         var cp = this.cameraSectionPos()
         var p = cp.clone()

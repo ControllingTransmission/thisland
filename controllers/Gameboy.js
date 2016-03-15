@@ -147,7 +147,7 @@ var Gameboy = function(){
     this.scale.y = 200;
     this.scale.z = 200;
 
-    scene.add(this);
+    //scene.add(this);
 
     return this
   };
