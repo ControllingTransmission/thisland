@@ -69,8 +69,8 @@ var BandName = function(onloaded){
     // this.scale.z = 1;
 
     this.bandname = BandName.model.clone()
-    for(var child in BandName.model.children) {
-      this.bandname.children[child].material = BandName.model.children[child].material.clone()
+    for(var c=0; c<BandName.model.children.length; c++) {
+      this.bandname.children[c].material = BandName.model.children[c].material.clone()
     }
     this.add(this.bandname)
 
@@ -79,8 +79,6 @@ var BandName = function(onloaded){
 
   this.init = function(){
 
-
-    console.log('BandName.model', BandName.model);
     if(BandName.model === undefined) { 
       console.log('not loaded');
       this.loadModel();
