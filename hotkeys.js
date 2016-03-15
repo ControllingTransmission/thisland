@@ -183,10 +183,10 @@ var movementCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.z += -10
+      camera.speed.position.z += -speedScale
     },
     "on_keyup"      : function(e) {
-      camera.speed.position.z -= -10
+      camera.speed.position.z -= -speedScale
     }
   },
   {
@@ -197,7 +197,7 @@ var movementCombos = listener.register_many([
       camera.speed.position.z += +speedScale
     },
     "on_keyup"      : function(e) {
-      camera.speed.position.z -= +10
+      camera.speed.position.z -= +speedScale
     }
   },
   {
@@ -208,7 +208,7 @@ var movementCombos = listener.register_many([
       camera.speed.position.x -= +speedScale
     },
     "on_keyup"      : function(e) {
-      camera.speed.position.x += +10
+      camera.speed.position.x += +speedScale
     }
   },
   {
@@ -219,7 +219,7 @@ var movementCombos = listener.register_many([
       camera.speed.position.x += +speedScale
     },
     "on_keyup"      : function(e) {
-      camera.speed.position.x -= +10
+      camera.speed.position.x -= +speedScale
     }
   },
 
@@ -228,10 +228,10 @@ var movementCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.z += -10
+      camera.speed.position.z += -speedScale
     },
     "on_keyup"      : function(e) {
-      camera.speed.position.z -= -10
+      camera.speed.position.z -= -speedScale
     }
   },
   {
@@ -239,10 +239,10 @@ var movementCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.z += +10
+      camera.speed.position.z += +speedScale
     },
     "on_keyup"      : function(e) {
-      camera.speed.position.z -= +10
+      camera.speed.position.z -= +speedScale
     }
   },
   {
@@ -250,10 +250,10 @@ var movementCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.x -= +10
+      camera.speed.position.x -= +speedScale
     },
     "on_keyup"      : function(e) {
-      camera.speed.position.x += +10
+      camera.speed.position.x += +speedScale
     }
   },
   {
@@ -261,10 +261,10 @@ var movementCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.x += +10
+      camera.speed.position.x += +speedScale
     },
     "on_keyup"      : function(e) {
-      camera.speed.position.x -= +10
+      camera.speed.position.x -= +speedScale
     }
   },
 
