@@ -77,31 +77,9 @@ var gameboyCombos = listener.register_many([
           gameboys[0].speed.rotation.y = 0.01
         })
         .start();
-/*      var tween2 = new TWEEN.Tween(gameboys[0].position)
-        .to({ y: 400 }, 2000)
-        // .easing(TWEEN.Easing.Exponential.In)
-        .start();*/
+
       gameboys[0].bandname.bandname.position.z = 0.5
       gameboys[0].bandname.bandname.scale.z = 0.5
-    },
-    "on_keyup"      : function(e) {
-    }
-  },
-  {
-    "keys"          : "1 b",
-    "is_exclusive"  : true,
-    "prevent_repeat": false,
-    "on_keydown"    : function() {
-      for(var g in gameboys) {
-        var gameboy = gameboys[g]
-        if(gameboy.bandname) {
-          gameboy.remove(gameboy.bandname)
-          scene.remove(gameboy.bandname)
-          gameboy.bandname = null
-        } else {
-          gameboy.addBandname()
-        }
-      }
     },
     "on_keyup"      : function(e) {
     }
@@ -151,7 +129,7 @@ var gameboyCombos = listener.register_many([
     "prevent_repeat": true,
     "on_keydown"    : function() {
       console.log('hi');
-      for(var g in gameboys) {
+      for(var g=0; g<gameboys.length; g++) {
         var gameboy = gameboys[g]
         gameboy.colorizeScreen(COLORSETS[4][0])
       }
@@ -215,6 +193,91 @@ var gameboyCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   },
+])
+
+
+function manipulateGameboyBandnames(action) {
+  for(var g=0; g<gameboys.length; g++) {
+    var gameboy = gameboys[g]
+    if(gameboy.bandname) {
+      var o = gameboy.bandname.children[0].children
+      console.log(gameboy.bandname.children[0]);
+      for(var x=0; x<o.length; x++){
+        action(x, o[x])
+      }
+    }
+  }
+}
+
+var gameboyBandnameCombos = listener.register_many([
+  {
+    "keys"          : "1 b",
+    "is_exclusive"  : true,
+    "prevent_repeat": false,
+    "on_keydown"    : function() {
+      for(var g=0; g<gameboys.length; g++) {
+        var gameboy = gameboys[g]
+        if(gameboy.bandname) {
+          gameboy.remove(gameboy.bandname)
+          scene.remove(gameboy.bandname)
+          gameboy.bandname = null
+        } else {
+          gameboy.addBandname()
+        }
+      }
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  {
+    "keys"          : "1 x",
+    "is_exclusive"  : true,
+    "prevent_repeat": false,
+    "on_keydown"    : function() {
+      manipulateGameboyBandnames(function warpAway(index, object){
+        var scale = 10
+        if(object.tween) { object.tween.stop() }
+        object.tween = new TWEEN.Tween(object.position)
+          .to({ x: (Math.random()-0.5)*scale, y: (Math.random()-0.5)*scale}, 100)
+          .easing(TWEEN.Easing.Quadratic.In)
+          .start();
+      })
+    },
+    "on_keyup"      : function(e) {
+      manipulateGameboyBandnames(function warpBack(index, object){
+        if(object.tween) { object.tween.stop() }
+        object.tween = new TWEEN.Tween(object.position)
+          .to({ x: 0, y: 0, z: 0 }, 100)
+          .easing(TWEEN.Easing.Quadratic.In)
+          .start();
+      })
+    }
+  },
+
+  {
+    "keys"          : "1 c",
+    "is_exclusive"  : true,
+    "prevent_repeat": false,
+    "on_keydown"    : function() {
+      manipulateGameboyBandnames(function spinAway(index, object){
+        if(object.tween) { object.tween.stop() }
+        object.tween = new TWEEN.Tween(object.rotation)
+          .to({ z: radians(45 * (Math.random()-0.5)) }, 100)
+          .easing(TWEEN.Easing.Quadratic.In)
+          .start();
+
+      })
+    },
+    "on_keyup"      : function(e) {
+      manipulateGameboyBandnames(function spinBack(index, object){
+        if(object.tween) { object.tween.stop() }
+        object.tween = new TWEEN.Tween(object.rotation)
+          .to({ z: radians(0) }, 100)
+          .easing(TWEEN.Easing.Quadratic.In)
+          .start();
+      })
+    }
+  },  
 ])
 
 var movementCombos = listener.register_many([
