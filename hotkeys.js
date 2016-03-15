@@ -1,6 +1,7 @@
 var listener = new window.keypress.Listener();
+var gameboyMod = "1 "
+var groundMod = "2 "
 
-var speedScale = 100
 var runnerGroundCombos = listener.register_many([
   {
     "keys"          : "space",
@@ -67,7 +68,7 @@ function addGameboy(){
 /*
 var gameboyCombos = listener.register_many([
   {
-    "keys"          : "1 m",
+    "keys"          : gameboyMod+"m",
     "is_exclusive"  : true,
     "on_keydown"    : function() {
       var tween = new TWEEN.Tween(gameboys[0].position)
@@ -85,7 +86,7 @@ var gameboyCombos = listener.register_many([
     }
   },
   {
-    "keys"          : "1 =",
+    "keys"          : gameboyMod+"=",
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -97,7 +98,7 @@ var gameboyCombos = listener.register_many([
     }
   },
   {
-    "keys"          : "1 -",
+    "keys"          : gameboyMod+"-",
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -109,7 +110,7 @@ var gameboyCombos = listener.register_many([
     }
   },
   {
-    "keys"          : "1 0",
+    "keys"          : gameboyMod+"0",
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -124,7 +125,7 @@ var gameboyCombos = listener.register_many([
   },
 
   {
-    "keys"          : "1 u",
+    "keys"          : gameboyMod+"u",
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -139,7 +140,7 @@ var gameboyCombos = listener.register_many([
   },
 
   {
-    "keys"          : "1 l",
+    "keys"          : gameboyMod+"l",
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -162,7 +163,7 @@ var gameboyCombos = listener.register_many([
   },
 
   {
-    "keys"          : "1 o",
+    "keys"          : gameboyMod+"o",
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -178,7 +179,7 @@ var gameboyCombos = listener.register_many([
     }
   },
   {
-    "keys"          : "1 .",
+    "keys"          : gameboyMod+".",
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -211,7 +212,7 @@ function manipulateGameboyBandnames(action) {
 
 var gameboyBandnameCombos = listener.register_many([
   {
-    "keys"          : "1 b",
+    "keys"          : gameboyMod+"b",
     "is_exclusive"  : true,
     "prevent_repeat": false,
     "on_keydown"    : function() {
@@ -230,7 +231,7 @@ var gameboyBandnameCombos = listener.register_many([
     }
   },
   {
-    "keys"          : "1 x",
+    "keys"          : gameboyMod+"x",
     "is_exclusive"  : true,
     "prevent_repeat": false,
     "on_keydown"    : function() {
@@ -255,7 +256,7 @@ var gameboyBandnameCombos = listener.register_many([
   },
 
   {
-    "keys"          : "1 c",
+    "keys"          : gameboyMod+"c",
     "is_exclusive"  : true,
     "prevent_repeat": false,
     "on_keydown"    : function() {
@@ -281,6 +282,9 @@ var gameboyBandnameCombos = listener.register_many([
 ])
 */
 
+
+var speedScale = 100
+var rotationScale = 0.01
 var movementCombos = listener.register_many([
   {
     "keys"          : "w",
@@ -309,10 +313,10 @@ var movementCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.x -= +speedScale
+      camera.speed.rotation.y += +rotationScale
     },
     "on_keyup"      : function(e) {
-      camera.speed.position.x += +speedScale
+      camera.speed.rotation.y -= +rotationScale
     }
   },
   {
@@ -320,10 +324,10 @@ var movementCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.x += +speedScale
+      camera.speed.rotation.y -= +rotationScale
     },
     "on_keyup"      : function(e) {
-      camera.speed.position.x -= +speedScale
+      camera.speed.rotation.y += +rotationScale
     }
   },
 
@@ -376,7 +380,7 @@ var movementCombos = listener.register_many([
   // ground 
   
     {
-    "keys"          : "n",
+    "keys"          : groundMod+"n",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -388,7 +392,7 @@ var movementCombos = listener.register_many([
   
   
    {
-    "keys"          : "m",
+    "keys"          : groundMod+"m",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -400,7 +404,7 @@ var movementCombos = listener.register_many([
 
   
    {
-    "keys"          : "b",
+    "keys"          : groundMod+"b",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -411,7 +415,7 @@ var movementCombos = listener.register_many([
   },
   
     {
-    "keys"          : "v",
+    "keys"          : groundMod+"v",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -423,7 +427,7 @@ var movementCombos = listener.register_many([
   
    
     {
-    "keys"          : ",",
+    "keys"          : groundMod+",",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -434,7 +438,7 @@ var movementCombos = listener.register_many([
   },
   
      {
-    "keys"          : ".",
+    "keys"          : groundMod+".",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -446,7 +450,7 @@ var movementCombos = listener.register_many([
   
    
      {
-    "keys"          : "/",
+    "keys"          : groundMod+"/",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
