@@ -90,6 +90,10 @@ Block = ideal.Proto.extend().newSlots({
 	remove: function()
 	{
 		this.scene().remove(this.mesh())
+		
+		if (this._gameboy) {   
+		    this._gameboy.remove()
+		}
 		return this
 	},
 
@@ -144,6 +148,7 @@ Block = ideal.Proto.extend().newSlots({
 		
 
 
+
 		var ymax = pw
 		for(var y = 0; y < ymax; y ++) {
 		    for(var x = 0; x < pw; x ++) {
@@ -157,10 +162,8 @@ Block = ideal.Proto.extend().newSlots({
                     
     			   g.vertices[i].z = Math.sin(2*Math.PI*y/(pw-1) - 2*Math.PI*x/(pw-1) + t/20)*400 
 
-                } else if (mode == "colors")  {
+                } else if (mode == "pause")  {
                     
-    			    var hsl = this.colorForIndex(i)
-    			    g.faces[i].color.r = 1
 		            
                 } else if (mode == "spikewaves")  {
 
@@ -177,14 +180,16 @@ Block = ideal.Proto.extend().newSlots({
     			        
     			    g.vertices[i].z = v * 400 
 
-    			    
                                           			    
                 } else if (mode == "evolve")  {
                     
-    			    g.vertices[i].z += (Math.random()-.5)*40 
-    			    if (g.vertices[i].z > 400) { g.vertices[i].z = 400; }
-    			    if (g.vertices[i].z < -400) { g.vertices[i].z = -400; }
-    			    
+            		var xx = this._mesh.position.x + bs*x/(pw-1)
+            		var yy = this._mesh.position.z + bs*y/(pw-1)
+		
+		            var dx = Math.sin(t/20 + xx/2000)
+		            var dy = Math.sin(t/20 + yy/2000)
+    			    g.vertices[i].z = (dy + dx)*400
+    			   
                                         
                 } else if (mode == "equalizer")  {
                     
@@ -234,7 +239,7 @@ Ground = ideal.Proto.extend().newSlots({
     type: "Ground",
     blocks: null,
     t: 0,
-	mode: "wave", // "wave", "wave2", "equalizer", "random"
+	mode: "wave", // "wave", "wave2", "equalizer", "random", "pause"
 }).setSlots({
     init: function () {
         this.setBlocks([])
@@ -324,10 +329,10 @@ Ground = ideal.Proto.extend().newSlots({
         var p = cp.clone()
         
         //var r = 2
-        for (var dz = -3; dz <= 1; dz ++) {
+        for (var dz = -2; dz <= 2; dz ++) {
             p.z = cp.z + dz
  
-             for (var dx = -1; dx <= 1; dx ++) {
+             for (var dx = -2; dx <= 2; dx ++) {
                 p.x = cp.x + dx
                        
                 if (!this.hasBlockForSectionPos(p)) {

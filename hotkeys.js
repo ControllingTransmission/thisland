@@ -437,7 +437,19 @@ var movementCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      Ground.setMode("colors")
+      Ground.setMode("pause")
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  
+   
+     {
+    "keys"          : "/",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+      Ground.setMode("evolve")
     },
     "on_keyup"      : function(e) {
     }
