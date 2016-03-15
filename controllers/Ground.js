@@ -37,17 +37,16 @@ Block = ideal.Proto.extend().newSlots({
 
 		this._material = new THREE.MeshBasicMaterial( {
 		//this._material = new THREE.MeshPhongMaterial( {
-	//	this._material = new THREE.MeshLambertMaterial( {
+	    //this._material = new THREE.MeshLambertMaterial( {
 			//side: THREE.FrontSide,
-			side: THREE.DoubleSide,
-			//side: THREE.BackSide,
+			//side: THREE.DoubleSide,
+			side: THREE.FrontSide,
 			vertexColors: THREE.FaceColors,
-			//wireframeLinewidth: 5,
-			//wireframe: true,
+			wireframeLinewidth: 5,
+			wireframe: true,
 		} );
 				
         this._mesh = new THREE.Mesh( this._geometry, this._material );
-		
 		
 		this._mesh.rotateX( radians(-90) )
 
@@ -57,13 +56,14 @@ Block = ideal.Proto.extend().newSlots({
         else if (Math.random() < .3) {
     	    this.addBandName()
         }
-        
     },
 
     addGameboy: function () {
+        if (this._gameboy) { return }
+        
 	    this._gameboy = addGameboy()
         //this.scene().remove(this._gameboy)
-		this._gameboy.rotateX( radians(80) )
+		this._gameboy.rotateX( radians(90) )
 		this._gameboy.position.z = 840
 		this._gameboy.position.y = -2000
 	    this._mesh.add(this._gameboy)
@@ -71,8 +71,9 @@ Block = ideal.Proto.extend().newSlots({
     },
     
     addBandName: function () {
+        if (this._bandname && !this._gameboy) { return }
       	var bn = new BandName(function(){console.log('loaded');}).init();
-		bn.position.set(0, 0, 1000)
+		bn.position.set(0, -2000, 1000)
 		bn.scale.set(100, 100, 100)
 		bn.rotateX( radians(80) )
 		bn.needsUpdate = true
@@ -158,7 +159,9 @@ Block = ideal.Proto.extend().newSlots({
     },
     
 	updateAudio: function(audioBins, t) {
-
+	    
+	    this._material.wireframe = this.ground().wireframe()
+	    
         if (this.isCameraSection() && this._gameboy) {
             this._gameboy.update()
         }
@@ -256,7 +259,7 @@ Block = ideal.Proto.extend().newSlots({
 
 // ----------------------------------------------------------
 
-//Ground.currentBlock().gameboy()
+//Ground.shared().currentBlock().gameboy()
 
 
 Ground = ideal.Proto.extend().newSlots({
@@ -265,6 +268,7 @@ Ground = ideal.Proto.extend().newSlots({
     t: 0,
 	mode: "wave", // "wave", "wave2", "equalizer", "random", "pause"
 	currentBlock: null,
+	wireframe: true,
 }).setSlots({
     init: function () {
         this.setBlocks([])
@@ -374,4 +378,9 @@ Ground = ideal.Proto.extend().newSlots({
         return this
     },
 
+    toggleWireframe: function () {
+        this._wireframe = !this._wireframe
+        return this
+    },
+    
 })

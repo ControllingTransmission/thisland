@@ -32,55 +32,37 @@ var runnerGroundCombos = listener.register_many([
 
 
 function addGameboy(){
-  console.log('add');
-  var gl = gameboys.length
-  if(gameboys[0]) {
-    var g0 = gameboys[0]
-    var g = new Gameboy().init();
-    g.colorize(COLORSETS[4][gl%COLORSETS[4].length])
-    g.position.x = g0.position.x
-    g.position.y = g0.position.y
-    g.position.z = g0.position.z
-    g.rotation.x = g0.rotation.x
-    g.rotation.y = g0.rotation.y
-    g.rotation.z = g0.rotation.z
-    g.scale.x =    g0.scale.x
-    g.scale.y =    g0.scale.y
-    g.scale.z =    g0.scale.z
-    g.speed.position.x = g0.speed.position.x
-    g.speed.position.y = g0.speed.position.y
-    g.speed.position.z = g0.speed.position.z
-    g.speed.rotation.x = g0.speed.rotation.x
-    g.speed.rotation.y = g0.speed.rotation.y
-    g.speed.rotation.z = g0.speed.rotation.z
-    g.speed.scale.x =    g0.speed.scale.x
-    g.speed.scale.y =    g0.speed.scale.y
-    g.speed.scale.z =    g0.speed.scale.z
-  }
-  else {
-    var g = new Gameboy().init();
-  }
-  //gameboys.push(g)
-  return g
+   var g =   new Gameboy().init();
+   var r = Math.floor(Math.random()*100)
+   //g.colorize(COLORSETS[4][ r % COLORSETS[4].length])
+
+   return g
+
 }
 
 
-/*
+currentGameboy = function () {
+    return Ground.shared().currentBlock().gameboy()
+}
+
 var gameboyCombos = listener.register_many([
   {
     "keys"          : gameboyMod+"m",
     "is_exclusive"  : true,
     "on_keydown"    : function() {
-      var tween = new TWEEN.Tween(gameboys[0].position)
-        .to({ z: 0 }, 2000)
-        .easing(TWEEN.Easing.Quadratic.In)
-        .onComplete(function(){
-          gameboys[0].speed.rotation.y = 0.01
-        })
-        .start();
+         var gameboy = currentGameboy()
+         if (gameboy) {
+          var tween = new TWEEN.Tween(gameboy.position)
+            .to({ z: 0 }, 2000)
+            .easing(TWEEN.Easing.Quadratic.In)
+            .onComplete(function(){
+              gameboy.speed.rotation.y = 0.01
+            })
+            .start();
 
-      gameboys[0].bandname.bandname.position.z = 0.5
-      gameboys[0].bandname.bandname.scale.z = 0.5
+          gameboy.bandname.bandname.position.z = 0.5
+          gameboy.bandname.bandname.scale.z = 0.5
+        }
     },
     "on_keyup"      : function(e) {
     }
@@ -90,9 +72,8 @@ var gameboyCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      var g = addGameboy();
-      var gl = gameboys.length
-      positionGameboy(g);
+
+        // add gameboy
     },
     "on_keyup"      : function(e) {
     }
@@ -102,9 +83,7 @@ var gameboyCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      console.log('remove');
-      var g = gameboys.pop()
-      scene.remove(g)
+       // remove gameboy
     },
     "on_keyup"      : function(e) {
     }
@@ -115,10 +94,8 @@ var gameboyCombos = listener.register_many([
     "prevent_repeat": true,
     "on_keydown"    : function() {
       console.log('remove');
-      while(gameboys.length > 0) {
-        var g = gameboys.pop()
-        scene.remove(g)
-      }
+             // remove gameboy
+
     },
     "on_keyup"      : function(e) {
     }
@@ -129,11 +106,10 @@ var gameboyCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      console.log('hi');
-      for(var g=0; g<gameboys.length; g++) {
-        var gameboy = gameboys[g]
-        gameboy.colorizeScreen(COLORSETS[4][0])
-      }
+        var gameboy = currentGameboy()
+        if (gameboy) {
+            gameboy.colorizeScreen(COLORSETS[4][0])
+        }
     },
     "on_keyup"      : function(e) {
     }
@@ -144,19 +120,19 @@ var gameboyCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      for(var g=0; g<gameboys.length; g++) {
-        var gameboy = gameboys[g]
-        var als = gameboy.audioLines
-        var v = [1, -1]
+        var gameboy = currentGameboy()
+        if (gameboy) {
+            var als = gameboy.audioLines
+            var v = [1, -1]
 
-        if(als[0]) {
-          var y = als[0].position.y
-        } else {
-          y = 0.8
+            if(als[0]) {
+              var y = als[0].position.y
+            } else {
+              y = 0.8
+            }
+
+            gameboy.addAudioline({y: y + 0.1 * v[(als.length+1) % 2] * Math.floor(als.length/2)});
         }
-
-        gameboy.addAudioline({y: y + 0.1 * v[(als.length+1) % 2] * Math.floor(als.length/2)});
-      }
     },
     "on_keyup"      : function(e) {
     }
@@ -167,13 +143,13 @@ var gameboyCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      for(var g=0; g<gameboys.length; g++) {
-        var gameboy = gameboys[g]
-        var als = gameboy.audioLines
-        for(var l=0; l<als.length; l++) {
-          als[l].position.y += 0.01
+        var gameboy = currentGameboy()
+        if (gameboy) {
+            var als = gameboy.audioLines
+            for(var l=0; l<als.length; l++) {
+              als[l].position.y += 0.01
+            }
         }
-      }
     },
     "on_keyup"      : function(e) {
     }
@@ -183,13 +159,13 @@ var gameboyCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      for(var g=0; g<gameboys.length; g++) {
-        var gameboy = gameboys[g]
-        var als = gameboy.audioLines
-        for(var l=0; l<als.length; l++) {
-          als[l].position.y -= 0.01
+        var gameboy = currentGameboy()
+        if (gameboy) {
+            var als = gameboy.audioLines
+            for(var l=0; l<als.length; l++) {
+              als[l].position.y -= 0.01
+            }
         }
-      }
     },
     "on_keyup"      : function(e) {
     }
@@ -198,16 +174,14 @@ var gameboyCombos = listener.register_many([
 
 
 function manipulateGameboyBandnames(action) {
-  for(var g=0; g<gameboys.length; g++) {
-    var gameboy = gameboys[g]
-    if(gameboy.bandname) {
+    var gameboy = currentGameboy()
+    if(gameboy && gameboy.bandname) {
       var o = gameboy.bandname.children[0].children
       console.log(gameboy.bandname.children[0]);
       for(var x=0; x<o.length; x++){
         action(x, o[x])
       }
     }
-  }
 }
 
 var gameboyBandnameCombos = listener.register_many([
@@ -216,8 +190,9 @@ var gameboyBandnameCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": false,
     "on_keydown"    : function() {
-      for(var g=0; g<gameboys.length; g++) {
-        var gameboy = gameboys[g]
+        var gameboy = currentGameboy()
+        if(gameboy) {
+        
         if(gameboy.bandname) {
           gameboy.remove(gameboy.bandname)
           scene.remove(gameboy.bandname)
@@ -280,7 +255,6 @@ var gameboyBandnameCombos = listener.register_many([
     }
   },  
 ])
-*/
 
 
 var speedScale = 100
@@ -455,6 +429,18 @@ var movementCombos = listener.register_many([
     "prevent_repeat": true,
     "on_keydown"    : function() {
       Ground.setMode("evolve")
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  
+   
+    {
+    "keys"          : groundMod+"'",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+      Ground.toggleWireframe()
     },
     "on_keyup"      : function(e) {
     }
