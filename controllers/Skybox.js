@@ -1,5 +1,5 @@
 function initSkybox(){
-	var urlPrefixes = [
+	/*var urlPrefixes = [
 		"img/painted-",
 		"img/painted2-",
 		"img/painted3-"
@@ -36,9 +36,40 @@ function initSkybox(){
 		new THREE.MeshBasicMaterial({color:0xffff00, depthWrite:false, side:THREE.BackSide}),
 		new THREE.MeshBasicMaterial({color:0x00ffff, depthWrite:false, side:THREE.BackSide}),
 		] 
-	skybox.materialIndex = 0
+	skybox.materialIndex = 0*/
+
+	var segments = 128
+	var geometry = new THREE.SphereGeometry( 100000, segments, segments );
+	var material = new THREE.MeshBasicMaterial( {
+			side: THREE.DoubleSide,
+			//side: THREE.BackSide,
+			vertexColors: THREE.FaceColors,
+		} );
+	material.side = THREE.DoubleSide
+	// material.wireframe = true
+	var skybox = new THREE.Mesh( geometry, material );
+
+	skybox.segments = segments;
+
+    
+	skybox.setColors = function(colorset) {
+		var geometry = this.geometry;
+		var length = geometry.faces.length;
+		for(var i = 0; i < length; i++) {
+			var color = new THREE.Color(colorset[0]);
+			var hsl = color.getHSL();
+			//console.log(hsl.h, hsl.s, hsl.l + Math.random()*0.05)
+			geometry.faces[i].color.setHSL(hsl.h, hsl.s, hsl.l - Math.random()*0.07)
+		}
+		geometry.colorsNeedUpdate = true;
+	}
+
+	skybox.setColors(['#00aaff'])
+
 	// add it to the scene
 	sceneCube.add( skybox );
+
+	return skybox
 }
 
 
