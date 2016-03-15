@@ -5,7 +5,7 @@ var AudioLine = function(onloaded){
   this.planeHeight = 1;
   this.planeRandomization = [];
   this.planeColors = [];
-  this.audioGain = 20;
+  this.audioGain = 0.05;
   this.colorSet = 0;
   this.onloaded = (onloaded) ? onloaded : function(){};
 
@@ -42,9 +42,8 @@ var AudioLine = function(onloaded){
     // console.log('updating');
     var g = this.plane.geometry;
     for(var i=0; i<=(this.planeWidth+1); i++) {
-      var row = i%(this.planeWidth+1);
-      var col = Math.floor(i/(this.planeWidth+1));
-      var x = (audioBin[row*25 + 64] - 50) * this.audioGain / 200;
+      var binIndex = Math.floor((32 -1) * i/(this.planeWidth+1))
+      var x = audioBin[binIndex] * this.audioGain;
       g.vertices[i].y = x;
       g.vertices[i+this.planeWidth].y = x - 1;
     }

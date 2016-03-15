@@ -136,8 +136,9 @@ var Gameboy = function(){
 
     // this.bandname.speed.rotation.z = 0.1
 
-    this.position.y = 140;
-    this.position.z = 2300;
+    this.position.x = -6;
+    this.position.y = 840;
+    this.position.z = 2290;
 
     // this.position.y = 400;
     // this.position.z = 2000;

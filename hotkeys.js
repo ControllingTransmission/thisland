@@ -16,11 +16,12 @@ var runnerGroundCombos = listener.register_many([
     "is_exclusive"  : true,
     "on_keydown"    : function() {
       camera.position.x = 0;
-      camera.position.y = 300;
+      camera.position.y = 1000;
       camera.position.z = 2500;
       
-      gameboy.position.y = 140;
-      gameboy.position.z = 2300
+      gameboy.position.x = -6;
+      gameboy.position.y = 840;
+      gameboy.position.z = 2290;
 
     },
     "on_keyup"      : function(e) {
@@ -70,16 +71,16 @@ var gameboyCombos = listener.register_many([
     "is_exclusive"  : true,
     "on_keydown"    : function() {
       var tween = new TWEEN.Tween(gameboys[0].position)
-        .to({ z: -500 }, 2000)
+        .to({ z: 0 }, 2000)
         .easing(TWEEN.Easing.Quadratic.In)
         .onComplete(function(){
           gameboys[0].speed.rotation.y = 0.01
         })
         .start();
-      var tween2 = new TWEEN.Tween(gameboys[0].position)
+/*      var tween2 = new TWEEN.Tween(gameboys[0].position)
         .to({ y: 400 }, 2000)
         // .easing(TWEEN.Easing.Exponential.In)
-        .start();
+        .start();*/
       gameboys[0].bandname.bandname.position.z = 0.5
       gameboys[0].bandname.bandname.scale.z = 0.5
     },
@@ -145,7 +146,7 @@ var gameboyCombos = listener.register_many([
   },
 
   {
-    "keys"          : "1 o",
+    "keys"          : "1 u",
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -164,12 +165,51 @@ var gameboyCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      for(var g in gameboys) {
+      for(var g=0; g<gameboys.length; g++) {
         var gameboy = gameboys[g]
         var als = gameboy.audioLines
         var v = [1, -1]
 
-        gameboy.addAudioline({y: 0.8 + 0.1 * v[(als.length+1) % 2] * Math.floor(als.length/2)});
+        if(als[0]) {
+          var y = als[0].position.y
+        } else {
+          y = 0.8
+        }
+
+        gameboy.addAudioline({y: y + 0.1 * v[(als.length+1) % 2] * Math.floor(als.length/2)});
+      }
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+
+  {
+    "keys"          : "1 o",
+    "is_exclusive"  : true,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+      for(var g=0; g<gameboys.length; g++) {
+        var gameboy = gameboys[g]
+        var als = gameboy.audioLines
+        for(var l=0; l<als.length; l++) {
+          als[l].position.y += 0.01
+        }
+      }
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  {
+    "keys"          : "1 .",
+    "is_exclusive"  : true,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+      for(var g=0; g<gameboys.length; g++) {
+        var gameboy = gameboys[g]
+        var als = gameboy.audioLines
+        for(var l=0; l<als.length; l++) {
+          als[l].position.y -= 0.01
+        }
       }
     },
     "on_keyup"      : function(e) {
