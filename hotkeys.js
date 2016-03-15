@@ -349,11 +349,14 @@ var movementCombos = listener.register_many([
       camera.speed.position.x -= +speedScale
     }
   },
-  
-  
+
+])
+
+
+var groundCombos = listener.register_many([
   // ground 
   
-    {
+  {
     "keys"          : groundMod+"n",
     "is_exclusive"  : false,
     "prevent_repeat": true,
@@ -445,6 +448,5 @@ var movementCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   },
-
 
 ])

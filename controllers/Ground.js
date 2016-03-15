@@ -84,7 +84,8 @@ Block = ideal.Proto.extend().newSlots({
     
     
     colorForIndex: function (i) {
-		var color = new THREE.Color(this._colorset[Math.floor(i/(this.planeWidth()*2)/5)]);
+        var stripeWidth = 7
+		var color = new THREE.Color(this._colorset[Math.floor(i/(this.planeWidth()*2)/stripeWidth)]);
 		var hsl = color.getHSL();   
 		return hsl     
     },
