@@ -11,8 +11,7 @@ Block = ideal.Proto.extend().newSlots({
 	audioGain: 20,
 	sectionPos: null,
 	rand: null,
-	mode: "equalizer", // "wave", "wave2", "equalizer", "rand"
-	
+	ground: null,
 }).setSlots({
     init: function () {
         this._rand = Math.random() *.8 + .2
@@ -33,7 +32,8 @@ Block = ideal.Proto.extend().newSlots({
 			this._planeRandomization[i] = Math.random() * (i/length);
 		}
 		
-		this._material = new THREE.MeshLambertMaterial( {
+		this._material = new THREE.MeshPhongMaterial( {
+	//	this._material = new THREE.MeshLambertMaterial( {
 			//side: THREE.FrontSide,
 			side: THREE.DoubleSide,
 			//side: THREE.BackSide,
@@ -41,7 +41,7 @@ Block = ideal.Proto.extend().newSlots({
 			//wireframeLinewidth: 5,
 			//wireframe: true,
 		} );
-		
+				
         this._mesh = new THREE.Mesh( this._geometry, this._material );
 		
 		this._mesh.rotateX( radians(-90) )
@@ -113,44 +113,51 @@ Block = ideal.Proto.extend().newSlots({
 	    return sp.x % 2 == 0 && sp.z % 2 == 0        
     },
 */
+
+    mode: function () {
+        return this.ground().mode()
+    },
+    
 	updateAudio: function(audioBins, t) {
 
-	        
 		var g = this._geometry
 		var pw = this.planeWidth()+1
 		var p = this._mesh.position
 		var bs = this.blockSize()
+    	var mode = this.mode()
 		
 		var ymax = pw
 		for(var y = 0; y < ymax; y ++) {
 		    for(var x = 0; x < pw; x ++) {
 		        var i = y*pw + x
                 
-    			
-    			if (this._mode == "wave") {
+    			if (mode == "wave") {
     			    
     			    g.vertices[i].z = Math.sin(2*Math.PI*y/(pw-1) + 2*Math.PI*x/(pw-1) + t/20)*400 
  
-                } else if (this._mode == "wave2")  {
+                } else if (mode == "wave2")  {
                     
     			   g.vertices[i].z = Math.cos(2*Math.PI*y/(pw-1) - 2*Math.PI*x/(pw-1) + t/20)*400 
 
-                } else if (this._mode == "colors")  {
+                } else if (mode == "colors")  {
                     
     			    var hsl = this.colorForIndex(i)
     			    g.faces[i].color.setHSL(hsl.h, hsl.s, hsl.l - Math.random()*0.07)
 		            g.colorsNeedUpdate = true;
 		            
-                } else if (this._mode == "rand")  {
+                } else if (mode == "random")  {
 
-    			    g.vertices[i].z = Math.random()*400 
- 			        //geometry.faces[i].color.setHSL(hsl.h, hsl.s, hsl.l - Math.random()*0.07)
+    			    //g.vertices[i].z = Math.random()*400 
+    			    g.vertices[i].z = Math.cos(g.vertices[i].z)*400 
                                           			    
-                } else if (this._mode == "rand")  {
+                } else if (mode == "evolve")  {
                     
-    			    g.vertices[i].z = Math.random()*400 
+    			    g.vertices[i].z += (Math.random()-.5)*40 
+    			    if (g.vertices[i].z > 800) { g.vertices[i].z = 800; }
+    			    if (g.vertices[i].z < -800) { g.vertices[i].z = -800; }
+    			    
                     
-                } else if (this._mode == "equalizer")  {
+                } else if (mode == "equalizer")  {
                     
                     var r = x/(pw -1)
 		        
@@ -170,13 +177,14 @@ Block = ideal.Proto.extend().newSlots({
 		        
     		        var b = Math.floor((audioBins.length - 1) * r)
 		        
-        			var v = Math.pow(audioBins[b] * 4, 1.4)
+        			//var v = Math.pow(audioBins[b] * 4, 1.4)
+        			var v = Math.pow(audioBins[b] * 2, 1.4)
         			var ydamp = 1/(1 + Math.abs(ymax/2 - y))
-                    v = v * ydamp
+                    v = v * ydamp*ydamp
                 
     			    g.vertices[i].z = v 
 
-/*
+                    /*
                     if (true) {
                         var val = v /1000
                         if (v > 1) { v = 1 }
@@ -203,6 +211,7 @@ Ground = ideal.Proto.extend().newSlots({
     type: "Ground",
     blocks: null,
     t: 0,
+	mode: "equalizer", // "wave", "wave2", "equalizer", "random"
 }).setSlots({
     init: function () {
         this.setBlocks([])
@@ -211,6 +220,8 @@ Ground = ideal.Proto.extend().newSlots({
         //this.blocks().push(block)
         this.addBlockForSectionPos(this.cameraSectionPos())
     },
+    
+//    setMode: function (
     
     updateAudio: function(audioBin) {
         this._t ++
@@ -251,6 +262,7 @@ Ground = ideal.Proto.extend().newSlots({
     },
     
     addBlock: function(block) {
+        block.setGround(this)
         this.blocks().push(block)
         block.add()
         return this

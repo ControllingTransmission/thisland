@@ -370,5 +370,67 @@ var movementCombos = listener.register_many([
       camera.speed.position.x -= +speedScale
     }
   },
+  
+  
+  // ground 
+  
+    {
+    "keys"          : "n",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+      Ground.setMode("wave2")
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  
+  
+   {
+    "keys"          : "m",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+      Ground.setMode("wave")
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+
+  
+   {
+    "keys"          : "b",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+      Ground.setMode("equalizer")
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  
+    {
+    "keys"          : "v",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+      Ground.setMode("random")
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  
+   
+    {
+    "keys"          : ",",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+      Ground.setMode("evolve")
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+
 
 ])
