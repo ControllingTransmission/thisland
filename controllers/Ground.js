@@ -8,10 +8,19 @@ Block = ideal.Proto.extend().newSlots({
     mesh: null,
     planeWidth: 32,
     blockSize: 20000,
+	audioGain: 20,
+	sectionPos: null,
+	rand: null,
 }).setSlots({
     init: function () {
-        this._geometry = new THREE.PlaneGeometry( this.blockSize(), this.blockSize(), 10, 10 );
-
+        this._rand = Math.random()
+        
+        this._geometry = new THREE.PlaneGeometry( 
+            this.blockSize(), this.blockSize(), 
+            this.planeWidth(), this.planeWidth() 
+        )
+        
+        this._sectionPos = new THREE.Vector3(0, 0, 0)
 		
 		this._planeRandomization = []
 		
@@ -22,9 +31,12 @@ Block = ideal.Proto.extend().newSlots({
 		}
 		
 		this._material = new THREE.MeshLambertMaterial( {
+			//side: THREE.FrontSide,
 			side: THREE.DoubleSide,
-			wireframeLinewidth: 2,
+			//side: THREE.BackSide,
 			vertexColors: THREE.FaceColors,
+			//wireframeLinewidth: 5,
+			//wireframe: true,
 		} );
 		
         this._mesh = new THREE.Mesh( this._geometry, this._material );
@@ -48,7 +60,7 @@ Block = ideal.Proto.extend().newSlots({
 			var color = new THREE.Color(colorset[Math.floor(i/(this.planeWidth()*2)/5)]);
 			var hsl = color.getHSL();
 			//console.log(hsl.h, hsl.s, hsl.l + Math.random()*0.05)
-			geometry.faces[i].color.setHSL(hsl.h, hsl.s, hsl.l + Math.random()*0.05)
+			geometry.faces[i].color.setHSL(hsl.h, hsl.s, hsl.l - Math.random()*0.07)
 		}
 		geometry.colorsNeedUpdate = true;
 	},
@@ -74,26 +86,81 @@ Block = ideal.Proto.extend().newSlots({
         return window.scene
     },
     
+    /*
     sectionPos: function() {
         var p = this._mesh.position
         var s = this.blockSize()
         return new THREE.Vector3( Math.floor(p.x/s), Math.floor(p.y/s), Math.floor(p.z/s) );
     },
+    */
     
     setSectionPos: function(p) {
+        this._sectionPos = p.clone()
         var newPos = p.multiplyScalar(this.blockSize())
-        console.log("setSectionPos newPos ", newPos)
+        //console.log("setSectionPos newPos ", newPos)
         this._mesh.position.z = newPos.z
         this._mesh.position.x = newPos.x
         this.updateColors()
         return this
     },
 
+    shouldUpdateAudio: function() {
+	    var sp = this.sectionPos()
+	    return sp.x % 2 == 0 && sp.z % 2 == 0        
+    },
+
+	updateAudio: function(audioBins, t) {
+	    var audioBins = Spectrum._beatByteData
+	    //console.log(audioBins)
+        //if (!this.shouldUpdateAudio()) { return }
+	        
+		var g = this._geometry
+		var pw = this.planeWidth()+1
+		var p = this._mesh.position
+		var bs = this.blockSize()
+		
+		for(var y = 0; y < 3; y ++) {
+		    for(var x = 0; x < pw; x ++) {
+		        var i = y*pw + x
+		        
+		        /*
+		        var dx = (x - pw/2)/pw
+		        var dy = (y - pw/2)/pw
+		        var d = Math.sqrt(dx*dx + dy*dy)
+		        */
+		        //var b = Math.floor(audioBin.length * y / pw )
+		        //var b = Math.floor(audioBin.length * Math.abs(x / pw) )
+		        var b = Math.floor(audioBins.length * x / pw )
+		        //var b = Math.floor(audioBins.length * this._rand)
+		        //var b = Math.floor(audioBin.length * d )
+    			var v = audioBins[b]/6
+//                v /= (y+1)
+                var damp = Math.sin( Math.PI * x / pw + Math.PI * y / pw) 
+                //var damp = 1/Math.abs((x - pw/2)/(pw/2)) 
+                v =  audioBins[b] * 1000
+    			g.vertices[i].z = v// * damp
+
+    			
+    			/*
+    			var wx = p.x + bs * x/pw
+    			var wy = p.y + bs * y/pw 
+    			//g.vertices[i].z = Math.sin(Math.sqrt(wx*wx + wy*wy)/1000)*300
+    			*/
+		    }
+		}
+		
+		g.verticesNeedUpdate = true;
+		return this
+	},
 })
+
+// ----------------------------------------------------------
+
 
 Ground = ideal.Proto.extend().newSlots({
     type: "Ground",
-    blocks: null
+    blocks: null,
+    t: 0,
 }).setSlots({
     init: function () {
         this.setBlocks([])
@@ -101,6 +168,12 @@ Ground = ideal.Proto.extend().newSlots({
         //var block = Block.clone().add()
         //this.blocks().push(block)
         this.addBlockForSectionPos(this.cameraSectionPos())
+    },
+    
+    updateAudio: function(audioBin) {
+        this._t ++
+        this.blocks().forEach(function (block) { block.updateAudio(audioBin, this._t) })
+        return this
     },
     
     shared: function() {
@@ -141,7 +214,7 @@ Ground = ideal.Proto.extend().newSlots({
     },
     
     removeBlock: function(block) {
-        console.log("removing block ", block.sectionPos())
+        //console.log("removing block ", block.sectionPos())
         this.blocks().remove(block)
         block.remove()
         return this
@@ -169,11 +242,11 @@ Ground = ideal.Proto.extend().newSlots({
         var cp = this.cameraSectionPos()
         var p = cp.clone()
         
-        var r = 3
-        for (var dz = -r; dz <= r; dz ++) {
+        //var r = 2
+        for (var dz = -3; dz <= 1; dz ++) {
             p.z = cp.z + dz
  
-             for (var dx = -r; dx <= r; dx ++) {
+             for (var dx = -1; dx <= 1; dx ++) {
                 p.x = cp.x + dx
                        
                 if (!this.hasBlockForSectionPos(p)) {
@@ -183,6 +256,7 @@ Ground = ideal.Proto.extend().newSlots({
         }
         
         this.removeDistantBlocks()
+        return this
     },
 
 })

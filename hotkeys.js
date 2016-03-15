@@ -1,5 +1,6 @@
 var listener = new window.keypress.Listener();
 
+var speedScale = 100
 var runnerGroundCombos = listener.register_many([
 	{
     "keys"          : "space",
@@ -15,10 +16,10 @@ var runnerGroundCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.z -= 100
+      camera.speed.position.z -= speedScale
     },
     "on_keyup"      : function(e) {
-    	camera.speed.position.z += 100
+    	camera.speed.position.z += speedScale
     }
   },
 	{
@@ -26,10 +27,10 @@ var runnerGroundCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.z += +100
+      camera.speed.position.z += +speedScale
     },
     "on_keyup"      : function(e) {
-    	camera.speed.position.z -= +100
+    	camera.speed.position.z -= +speedScale
     }
   },
 	{
@@ -37,10 +38,10 @@ var runnerGroundCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.x -= +100
+      camera.speed.position.x -= +speedScale
     },
     "on_keyup"      : function(e) {
-    	camera.speed.position.x += +100
+    	camera.speed.position.x += +speedScale
     }
   },
 	{
@@ -48,10 +49,10 @@ var runnerGroundCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      camera.speed.position.x += +100
+      camera.speed.position.x += +speedScale
     },
     "on_keyup"      : function(e) {
-    	camera.speed.position.x -= +100
+    	camera.speed.position.x -= +speedScale
     }
   },
   {
