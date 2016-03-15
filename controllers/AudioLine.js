@@ -54,11 +54,12 @@ var AudioLine = function(onloaded){
     console.log('colors');
     var geometry = this.plane.geometry;
     var length = geometry.faces.length;
+    var colorIndex = Math.floor(Math.random()*colorset.length)
+    console.log('color', colorIndex);
     for(var i = 0; i < length; i++) {
-      var color = new THREE.Color(colorset[Math.floor(i/(this.planeWidth*2)/5)]);
+      var color = new THREE.Color(colorset[colorIndex]);
       var hsl = color.getHSL();
       geometry.faces[i].color.setHSL(hsl.h, hsl.s, hsl.l + Math.random()*0.05)
-      // geometry.faces[i].color = this.planeColors[i];
     }
     geometry.colorsNeedUpdate = true;
     console.log(geometry.colorsNeedUpdate);
