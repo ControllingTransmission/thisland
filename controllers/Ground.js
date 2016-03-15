@@ -12,6 +12,7 @@ Block = ideal.Proto.extend().newSlots({
 	sectionPos: null,
 	rand: null,
 	ground: null,
+	isCameraSection: false,
 }).setSlots({
     init: function () {
         this._rand = Math.random() *.8 + .2
@@ -31,8 +32,9 @@ Block = ideal.Proto.extend().newSlots({
 		for(var i = 0; i <= length; i++) {
 			this._planeRandomization[i] = Math.random() * (i/length);
 		}
-		
-		this._material = new THREE.MeshPhongMaterial( {
+
+		this._material = new THREE.MeshBasicMaterial( {
+		//this._material = new THREE.MeshPhongMaterial( {
 	//	this._material = new THREE.MeshLambertMaterial( {
 			//side: THREE.FrontSide,
 			side: THREE.DoubleSide,
@@ -44,9 +46,20 @@ Block = ideal.Proto.extend().newSlots({
 				
         this._mesh = new THREE.Mesh( this._geometry, this._material );
 		
+		
 		this._mesh.rotateX( radians(-90) )
 	
+	    if (Math.random() < .3) {
+    	    this._gameboy = addGameboy()
+    	    this.scene().remove(this._gameboy)
+    		this._gameboy.rotateX( radians(45) )
+    		this._gameboy.position.z = 840
+    		this._gameboy.position.y = -2000
+	    
+    	    this._mesh.add(this._gameboy)
+        }
     },
+    
     
     colorForIndex: function (i) {
 		var color = new THREE.Color(this._colorset[Math.floor(i/(this.planeWidth()*2)/5)]);
@@ -66,7 +79,6 @@ Block = ideal.Proto.extend().newSlots({
 		}
 		geometry.colorsNeedUpdate = true;
 	},
-
     
         
 	add: function()
@@ -120,12 +132,18 @@ Block = ideal.Proto.extend().newSlots({
     
 	updateAudio: function(audioBins, t) {
 
+        if (this.isCameraSection() && this._gameboy) {
+            this._gameboy.update()
+        }
+        
 		var g = this._geometry
 		var pw = this.planeWidth()+1
 		var p = this._mesh.position
 		var bs = this.blockSize()
     	var mode = this.mode()
 		
+
+
 		var ymax = pw
 		for(var y = 0; y < ymax; y ++) {
 		    for(var x = 0; x < pw; x ++) {
@@ -137,26 +155,37 @@ Block = ideal.Proto.extend().newSlots({
  
                 } else if (mode == "wave2")  {
                     
-    			   g.vertices[i].z = Math.cos(2*Math.PI*y/(pw-1) - 2*Math.PI*x/(pw-1) + t/20)*400 
+    			   g.vertices[i].z = Math.sin(2*Math.PI*y/(pw-1) - 2*Math.PI*x/(pw-1) + t/20)*400 
 
                 } else if (mode == "colors")  {
                     
     			    var hsl = this.colorForIndex(i)
-    			    g.faces[i].color.setHSL(hsl.h, hsl.s, hsl.l - Math.random()*0.07)
-		            g.colorsNeedUpdate = true;
+    			    g.faces[i].color.r = 1
 		            
-                } else if (mode == "random")  {
+                } else if (mode == "spikewaves")  {
 
-    			    //g.vertices[i].z = Math.random()*400 
-    			    g.vertices[i].z = Math.cos(g.vertices[i].z)*400 
+                    var v = y % 2 + x % 2
+    			    g.vertices[i].z = v * 200 *  Math.sin(2*Math.PI*y/(pw-1) - 2*Math.PI*x/(pw-1) + t/20) 
+    			    //g.vertices[i].z += Math.sin(2*Math.PI*y/(pw-1) - 2*Math.PI*x/(pw-1) + t/20)*400 
+                                          			    
+                } else if (mode == "other")  {
+                    
+    			    
+    			    var v = 0
+    			    v = Math.sin(2*Math.PI*y/(pw-1) + t/25) 
+    			    v += Math.sin(2*Math.PI*x/(pw-1) + t/15) 
+    			        
+    			    g.vertices[i].z = v * 400 
+
+    			    
                                           			    
                 } else if (mode == "evolve")  {
                     
     			    g.vertices[i].z += (Math.random()-.5)*40 
-    			    if (g.vertices[i].z > 800) { g.vertices[i].z = 800; }
-    			    if (g.vertices[i].z < -800) { g.vertices[i].z = -800; }
+    			    if (g.vertices[i].z > 400) { g.vertices[i].z = 400; }
+    			    if (g.vertices[i].z < -400) { g.vertices[i].z = -400; }
     			    
-                    
+                                        
                 } else if (mode == "equalizer")  {
                     
                     var r = x/(pw -1)
@@ -183,23 +212,17 @@ Block = ideal.Proto.extend().newSlots({
                     v = v * ydamp*ydamp
                 
     			    g.vertices[i].z = v 
-
-                    /*
-                    if (true) {
-                        var val = v /1000
-                        if (v > 1) { v = 1 }
-                        
-        			    var hsl = this.colorForIndex(i)
-        			    g.faces[i].color.setHSL(hsl.h, hsl.s , hsl.l - v)
-    		            g.colorsNeedUpdate = true;
-	                }
-	                */
                 }
 
 		    }
 		}
 		
-		g.verticesNeedUpdate = true;
+        if (mode == "colors")  {
+		    g.colorsNeedUpdate = true;
+		} else {
+		    g.verticesNeedUpdate = true;
+        }
+		
 		return this
 	},
 })
@@ -211,7 +234,7 @@ Ground = ideal.Proto.extend().newSlots({
     type: "Ground",
     blocks: null,
     t: 0,
-	mode: "equalizer", // "wave", "wave2", "equalizer", "random"
+	mode: "wave", // "wave", "wave2", "equalizer", "random"
 }).setSlots({
     init: function () {
         this.setBlocks([])
@@ -289,6 +312,9 @@ Ground = ideal.Proto.extend().newSlots({
             if (dx > 4) { 
                 self.removeBlock(block)
             }
+            
+            var same = dx == 0 && dz == 0
+            block.setIsCameraSection(same)
         })
           
     },
