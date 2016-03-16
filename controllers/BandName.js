@@ -197,7 +197,7 @@ var BandName = function(onloaded){
   }
 
   this.startSpin = function(){
-    this.speed.rotation.y = 0.01
+    this.speed.rotation.y = 0.05
   }
   
    this.stopSpin = function(){
