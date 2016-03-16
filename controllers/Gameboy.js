@@ -31,7 +31,7 @@ var Gameboy = function(onloaded){
     var onProgress = function ( xhr ) {
       if ( xhr.lengthComputable ) {
         var percentComplete = xhr.loaded / xhr.total * 100;
-        console.log( Math.round(percentComplete, 2) + '% downloaded' );
+        //console.log( Math.round(percentComplete, 2) + '% downloaded' );
       }
     };
 
@@ -44,9 +44,9 @@ var Gameboy = function(onloaded){
     mtlLoader.setPath( 'models/gameboy/' );
     mtlLoader.load( 'gameboy.mtl', function( materials ) {
 
-      console.log(materials);
+      //console.log(materials);
       materials.preload();
-      console.log(materials);
+      //console.log(materials);
       Gameboy.materials = materials
 
       var objLoader = new THREE.OBJLoader();
@@ -184,7 +184,22 @@ var Gameboy = function(onloaded){
       var dt = 50
       new TWEEN.Tween(self.scale).to(self._endScale, dt)
          .onComplete(function() {
-            console.log("complete")
+            new TWEEN.Tween(self.scale).to(self._baseScale, dt).start();
+        })        
+        .start();        
+  };
+  
+  this.pulseBig = function () {
+      
+      if (!this._baseScale) {
+          this._baseScale = this.scale.clone()
+          this._endScale = this.scale.clone().multiplyScalar(2)
+      }
+      var self = this
+
+      var dt = 50
+      new TWEEN.Tween(self.scale).to(self._endScale, dt)
+         .onComplete(function() {
             new TWEEN.Tween(self.scale).to(self._baseScale, dt).start();
         })        
         .start();  
