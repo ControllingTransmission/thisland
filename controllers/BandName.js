@@ -115,6 +115,60 @@ var BandName = function(onloaded){
         setTimeout(function () { self.scale = begin }, 1000)
   };
 
+  this.warpAway = function(index, object){
+    var o = this.children[0].children
+    for(var x=0; x<o.length; x++){
+      var index = x
+      var object = o[x]
+      var scale = 10
+      if(object.tween) { object.tween.stop() }
+      object.tween = new TWEEN.Tween(object.position)
+        .to({ x: (Math.random()-0.5)*scale, y: (Math.random()-0.5)*scale}, 100)
+        .easing(TWEEN.Easing.Quadratic.In)
+        .start();
+    }
+  }
+
+  this.warpBack = function(index, object){
+    var o = this.children[0].children
+    for(var x=0; x<o.length; x++){
+      var index = x
+      var object = o[x]
+      if(object.tween) { object.tween.stop() }
+      object.tween = new TWEEN.Tween(object.position)
+        .to({ x: 0, y: 0, z: 0 }, 100)
+        .easing(TWEEN.Easing.Quadratic.In)
+        .start();
+    }
+  }
+
+  this.twistOut = function(){
+    var o = this.children[0].children
+    for(var x=0; x<o.length; x++){
+      var index = x
+      var object = o[x]
+      if(object.tween) { object.tween.stop() }
+      object.tween = new TWEEN.Tween(object.rotation)
+        .to({ z: radians(45 * (Math.random()-0.5)) }, 100)
+        .easing(TWEEN.Easing.Quadratic.In)
+        .start();
+    }
+  }
+
+  this.twistBack = function(){
+    var o = this.children[0].children
+    for(var x=0; x<o.length; x++){
+      var index = x
+      var object = o[x]
+      if(object.tween) { object.tween.stop() }
+        object.tween = new TWEEN.Tween(object.rotation)
+          .to({ z: radians(0) }, 100)
+          .easing(TWEEN.Easing.Quadratic.In)
+          .start();
+    }
+  }
+
+
 }
 BandName.prototype = Object.create(THREE.Object3D.prototype);
 // Planet.prototype.constructor = THREETree;

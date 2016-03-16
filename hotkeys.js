@@ -221,23 +221,12 @@ var gameboyBandnameCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": false,
     "on_keydown"    : function() {
-      manipulateGameboyBandnames(function warpAway(index, object){
-        var scale = 10
-        if(object.tween) { object.tween.stop() }
-        object.tween = new TWEEN.Tween(object.position)
-          .to({ x: (Math.random()-0.5)*scale, y: (Math.random()-0.5)*scale}, 100)
-          .easing(TWEEN.Easing.Quadratic.In)
-          .start();
-      })
+      var gameboy = currentGameboy()
+      gameboy.bandname.warpAway()
     },
     "on_keyup"      : function(e) {
-      manipulateGameboyBandnames(function warpBack(index, object){
-        if(object.tween) { object.tween.stop() }
-        object.tween = new TWEEN.Tween(object.position)
-          .to({ x: 0, y: 0, z: 0 }, 100)
-          .easing(TWEEN.Easing.Quadratic.In)
-          .start();
-      })
+      var gameboy = currentGameboy()
+      gameboy.bandname.warpBack()
     }
   },
 
@@ -246,23 +235,12 @@ var gameboyBandnameCombos = listener.register_many([
     "is_exclusive"  : true,
     "prevent_repeat": false,
     "on_keydown"    : function() {
-      manipulateGameboyBandnames(function spinAway(index, object){
-        if(object.tween) { object.tween.stop() }
-        object.tween = new TWEEN.Tween(object.rotation)
-          .to({ z: radians(45 * (Math.random()-0.5)) }, 100)
-          .easing(TWEEN.Easing.Quadratic.In)
-          .start();
-
-      })
+      var gameboy = currentGameboy()
+      gameboy.bandname.twistOut()
     },
     "on_keyup"      : function(e) {
-      manipulateGameboyBandnames(function spinBack(index, object){
-        if(object.tween) { object.tween.stop() }
-        object.tween = new TWEEN.Tween(object.rotation)
-          .to({ z: radians(0) }, 100)
-          .easing(TWEEN.Easing.Quadratic.In)
-          .start();
-      })
+      var gameboy = currentGameboy()
+      gameboy.bandname.twistBack()
     }
   },  
 ])
