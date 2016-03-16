@@ -427,6 +427,18 @@ var pulseCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   }, 
+  
+   {
+    "keys"          : groundMod+"h",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+        console.log("spin key")
+        Ground.shared().performOnBlockObjects("spin")
+    },
+    "on_keyup"      : function(e) {
+    }
+  }, 
 
   {
     "keys"          : "b",
@@ -483,6 +495,30 @@ var skyboxCombos = listener.register_many([
       skybox.twinkle()
     }
   },
+  
+  {
+    "keys"          : groundMod+"g",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+        console.log("g key")
+        
+        Ground.shared().performOnBlockObjects("startSpin")
+        
+    },
+  },   
+  
+   {
+    "keys"          : groundMod+"f",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+        console.log("g key")
+        
+        Ground.shared().performOnBlockObjects("stopSpin")
+        
+    },
+  },   
   
 
 

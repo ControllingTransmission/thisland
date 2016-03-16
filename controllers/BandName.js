@@ -114,6 +114,19 @@ var BandName = function(onloaded){
         .start();        
   };
 
+  this.spin = function () {
+      console.log("bandname spin")
+
+      var self = this
+      var nextRotation = this.rotation.clone()
+      nextRotation.x += 2*Math.PI
+      nextRotation.z += 2*Math.PI
+      var tween = new TWEEN.Tween(this.rotation)
+        .to({ x: nextRotation.x, z: nextRotation.z }, 100)
+        .start(); 
+  };
+
+
   this.warpAway = function(index, object){
     var o = this.children[0].children
     for(var x=0; x<o.length; x++){
@@ -167,6 +180,17 @@ var BandName = function(onloaded){
     }
   }
 
+  this.startSpin = function(){
+    this.speed.rotation.y = 0.01
+  }
+  
+   this.stopSpin = function(){
+        this.speed.rotation.y = 0
+        new TWEEN.Tween(this.rotation)
+                  .to({ y: 0 }, 100)
+                  .easing(TWEEN.Easing.Quadratic.In)
+                  .start();
+   }
 
 }
 BandName.prototype = Object.create(THREE.Object3D.prototype);
