@@ -98,15 +98,21 @@ var BandName = function(onloaded){
   };
   
    this.pulse = function () {
+      var self = this
       var begin = this.scale.clone()
-      var big = this.scale.clone().multiplyScalar(1.5)
-      var small = this.scale.clone()
-      
-      new TWEEN.Tween(this.scale).to(big, 200)
+      var end = this.scale.clone().multiplyScalar(2)
+      console.log("pulse bandname")
+/*
+      new TWEEN.Tween(this.scale).to(end, 200)
          .onComplete(function() {
-             new TWEEN.Tween(this.scale).to(small, 200)
+            var end = self.scale.clone().multiplyScalar(.5)
+            new TWEEN.Tween(self.scale).to(begin, 200).start();
         })        
         .start();
+        */
+        
+        self.scale = end
+        setTimeout(function () { self.scale = begin }, 1000)
   };
 
   this.warpAway = function(index, object){
