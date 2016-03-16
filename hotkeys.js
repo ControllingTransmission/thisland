@@ -62,10 +62,16 @@ var gameboyCombos = listener.register_many([
     "is_exclusive"  : true,
     "on_keydown"    : function() {
          var gameboy = currentGameboy()
+         var p = gameboy.position.clone()
+         p.y += 3000
+         p.x -= 00
          if (gameboy) {
-          var tween = new TWEEN.Tween(gameboy.position)
-            .to({ y: 0 }, 2000)
+          var tween = new TWEEN.Tween(camera.position)
+            .to({ x: 1000, z: 6000 }, 2000)
             .easing(TWEEN.Easing.Quadratic.In)
+            .onUpdate(function(){
+              camera.lookAt(p)
+            })
             .onComplete(function(){
               gameboy.speed.rotation.y = 0.01
             })
@@ -511,7 +517,7 @@ var skyboxCombos = listener.register_many([
     }
   }, 
   
-     {
+  {
     "keys"          : groundMod+"j",
     "is_exclusive"  : false,
     "prevent_repeat": true,
@@ -519,23 +525,28 @@ var skyboxCombos = listener.register_many([
         console.log("pulse key")
         
         Ground.shared().performOnBlockObjects("pulse")
-        /*
-        var block = Ground.shared().currentBlock()
-            console.log("block = ", block)
-        if (block) {
-            console.log("block.gameboy() = ", block.gameboy())
-            if (block.gameboy()) {
-                block.gameboy().pulse()
-            } else if (block.bandname()) {
-                block.bandname().pulse()
-            }
-        }
-        */
         
     },
     "on_keyup"      : function(e) {
     }
+  }, 
+
+  {
+    "keys"          : groundMod+"u",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+        console.log("pulse key")
+        
+        Ground.shared().performOnBlockObjects("warpAway")
+        
+    },
+    "on_keyup"      : function(e) {
+        Ground.shared().performOnBlockObjects("warpBack")
+
+    }
   },   
   
+
 
 ])
