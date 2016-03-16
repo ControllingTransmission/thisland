@@ -97,22 +97,21 @@ var BandName = function(onloaded){
     this.rotation.z += this.speed.rotation.z
   };
   
-   this.pulse = function () {
+  this.pulse = function () {
+      
+      if (!this._baseScale) {
+          this._baseScale = this.scale.clone()
+          this._endScale = this.scale.clone().multiplyScalar(1.2)
+      }
       var self = this
-      var begin = this.scale.clone()
-      var end = this.scale.clone().multiplyScalar(2)
-      console.log("pulse bandname")
-/*
-      new TWEEN.Tween(this.scale).to(end, 200)
+
+      var dt = 10
+      new TWEEN.Tween(self.scale).to(self._endScale, 10)
          .onComplete(function() {
-            var end = self.scale.clone().multiplyScalar(.5)
-            new TWEEN.Tween(self.scale).to(begin, 200).start();
+            console.log("complete")
+            new TWEEN.Tween(self.scale).to(self._baseScale, dt).start();
         })        
-        .start();
-        */
-        
-        self.scale = end
-        setTimeout(function () { self.scale = begin }, 1000)
+        .start();        
   };
 
   this.warpAway = function(index, object){

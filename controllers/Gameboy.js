@@ -174,23 +174,20 @@ var Gameboy = function(onloaded){
   };
   
   this.pulse = function () {
-      /*
+      
+      if (!this._baseScale) {
+          this._baseScale = this.scale.clone()
+          this._endScale = this.scale.clone().multiplyScalar(1.2)
+      }
       var self = this
-      var begin = this.scale.clone()
-      var end = this.scale.clone().multiplyScalar(2)
 
-      new TWEEN.Tween(this.scale).to(end, 200)
+      var dt = 50
+      new TWEEN.Tween(self.scale).to(self._endScale, dt)
          .onComplete(function() {
             console.log("complete")
-            var end = self.scale.clone().multiplyScalar(.5)
-            new TWEEN.Tween(self.scale).to(begin, 200).start();
+            new TWEEN.Tween(self.scale).to(self._baseScale, dt).start();
         })        
-        .start();
-        
-        */
-    //this.scale = end
-    //setTimeout(function () { self.scale = begin }, 100)
-        
+        .start();        
   };
 
 }
