@@ -185,11 +185,11 @@ Block = ideal.Proto.extend().newSlots({
 	    
 	    this._material.wireframe = this.ground().wireframe()
 	    
-        if (this.isCameraSection()) {
+        //if (this.isCameraSection()) {
             if (this._gameboy) {
                 this._gameboy.update()
             }
-        }
+        //}
         
         if (this._bandname) {
             this._bandname.update()
