@@ -1,6 +1,7 @@
 var listener = new window.keypress.Listener();
 var gameboyMod = "1 "
 var groundMod = "2 "
+var skyboxMod = "3 "
 
 var runnerGroundCombos = listener.register_many([
   {
@@ -32,9 +33,11 @@ var runnerGroundCombos = listener.register_many([
 
 
 function addGameboy(){
-   var g =   new Gameboy().init();
-   var r = Math.floor(Math.random()*100)
-   //g.colorize(COLORSETS[4][ r % COLORSETS[4].length])
+    var r = Math.floor(Math.random()*100)
+    var g = new Gameboy(function(){
+      this.colorize(COLORSETS[4][ r % COLORSETS[4].length])
+    }).init()
+      
 
    return g
 
@@ -436,9 +439,7 @@ var groundCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   },
-  
-   
-    {
+  {
     "keys"          : groundMod+"'",
     "is_exclusive"  : false,
     "prevent_repeat": true,
@@ -446,6 +447,31 @@ var groundCombos = listener.register_many([
       Ground.shared().toggleWireframe()
     },
     "on_keyup"      : function(e) {
+    }
+  },
+])
+
+
+var skyboxCombos = listener.register_many([
+  {
+    "keys"          : skyboxMod+"n",
+    "is_exclusive"  : false,
+    "prevent_repeat": false,
+    "on_keydown"    : function() {
+      skybox.twinkle()
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  {
+    "keys"          : skyboxMod+"b",
+    "is_exclusive"  : false,
+    "prevent_repeat": false,
+    "on_keydown"    : function() {
+      skybox.setSolidColor('#000000')
+    },
+    "on_keyup"      : function(e) {
+      skybox.twinkle()
     }
   },
 
@@ -456,11 +482,11 @@ var groundCombos = listener.register_many([
     "on_keydown"    : function() {
         var p = Ground.shared().randomBandnamePos().clone()
         if (p) {
-            console.log(p)
             p.y = 980
             
             var gp = p.clone()
             gp.z += 4000
+            gp.x += 4000*(Math.random() - .5)
                         
             var tween = new TWEEN.Tween(camera.position)
                 .to(gp, 1500)
@@ -486,6 +512,7 @@ var groundCombos = listener.register_many([
             
             var gp = p.clone()
             gp.z += 2000
+            gp.x += 2000*(Math.random() - .5)
                         
             var tween = new TWEEN.Tween(camera.position)
                 .to(gp, 1500)
