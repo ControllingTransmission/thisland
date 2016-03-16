@@ -181,7 +181,7 @@ Block = ideal.Proto.extend().newSlots({
     },
     
 	updateAudio: function(t) {
-	    Spectrum.audioBin()
+	    var audioBins = Spectrum.audioBin()
 	    
 	    this._material.wireframe = this.ground().wireframe()
 	    
