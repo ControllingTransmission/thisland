@@ -202,8 +202,15 @@ var Gameboy = function(onloaded){
          .onComplete(function() {
             new TWEEN.Tween(self.scale).to(self._baseScale, dt).start();
         })        
-        .start();        
+        .start();  
+
+      this.bandname.pulse()      
   };
+
+  this.warpAway = function () { this.bandname.warpAway() }
+  this.warpBack = function () { this.bandname.warpBack() }
+  this.twistOut = function () { this.bandname.twistOut() }
+  this.twistBack = function () { this.bandname.twistBack() }
 
 }
 Gameboy.prototype = Object.create(THREE.Object3D.prototype);
