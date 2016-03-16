@@ -172,6 +172,18 @@ var Gameboy = function(onloaded){
       line.update(audioBin);
     }
   };
+  
+  this.pulse = function () {
+      console.log("GB PULSE!")
+      var begin = this.scale.clone()
+      var end = this.scale.clone().multiplyScalar(1.5)
+      
+      new TWEEN.Tween(this.scale).to(end, 200)
+         .onComplete(function() {
+             new TWEEN.Tween(this.scale).to(begin, 200)
+        })        
+        .start();
+  };
 
 }
 Gameboy.prototype = Object.create(THREE.Object3D.prototype);

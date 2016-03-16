@@ -200,9 +200,6 @@ Block = ideal.Proto.extend().newSlots({
 		var p = this._mesh.position
 		var bs = this.blockSize()
     	var mode = this.mode()
-		
-
-
 
 		var ymax = pw
 		for(var y = 0; y < ymax; y ++) {
@@ -295,9 +292,9 @@ Ground = ideal.Proto.extend().newSlots({
     type: "Ground",
     blocks: null,
     t: 0,
-	mode: "wave", // "wave", "wave2", "equalizer", "random", "pause"
+	mode: "equalizer", // "wave", "wave2", "equalizer", "random", "pause"
 	currentBlock: null,
-	wireframe: true,
+	wireframe: false,
 }).setSlots({
     init: function () {
         this.setBlocks([])

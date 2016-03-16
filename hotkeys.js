@@ -523,7 +523,29 @@ var skyboxCombos = listener.register_many([
     },
     "on_keyup"      : function(e) {
     }
-  },  
+  }, 
+  
+     {
+    "keys"          : groundMod+"j",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+        console.log("pulse key")
+        var block = Ground.shared().currentBlock()
+            console.log("block = ", block)
+        if (block) {
+            console.log("block.gameboy() = ", block.gameboy())
+            if (block.gameboy()) {
+                block.gameboy().pulse()
+            } else if (block.bandname()) {
+                block.bandname().pulse()
+            }
+        }
+        
+    },
+    "on_keyup"      : function(e) {
+    }
+  },   
   
 
 ])

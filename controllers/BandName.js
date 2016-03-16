@@ -96,6 +96,18 @@ var BandName = function(onloaded){
     this.rotation.y += this.speed.rotation.y
     this.rotation.z += this.speed.rotation.z
   };
+  
+   this.pulse = function () {
+      var begin = this.scale.clone()
+      var big = this.scale.clone().multiplyScalar(1.5)
+      var small = this.scale.clone()
+      
+      new TWEEN.Tween(this.scale).to(big, 200)
+         .onComplete(function() {
+             new TWEEN.Tween(this.scale).to(small, 200)
+        })        
+        .start();
+  };
 
 }
 BandName.prototype = Object.create(THREE.Object3D.prototype);
