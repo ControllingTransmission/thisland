@@ -133,7 +133,7 @@ var Gameboy = function(onloaded){
     }
 
     this.addBandname();
-    this.addAudioline();
+    // this.addAudioline();
 
     // this.bandname.speed.rotation.z = 0.1
 
