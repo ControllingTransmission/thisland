@@ -505,6 +505,18 @@ var pulseCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   }, 
+
+  {
+    "keys"          : "v",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+        console.log("pulse key")
+        Ground.shared().performOnBlockObjects("pulseBig")
+    },
+    "on_keyup"      : function(e) {
+    }
+  }, 
   
    {
     "keys"          : groundMod+"h",
