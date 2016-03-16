@@ -411,15 +411,29 @@ Ground = ideal.Proto.extend().newSlots({
         this._wireframe = !this._wireframe
         return this
     },
-    
-    blocksWithObjPos: function() {
+
+    blocksWithBandname: function() {
         return this.blocks().filter(function (block) {
-            return block.objPos() != null
+            return block.bandname() != null
+        })
+    },
+        
+    blocksWithGameboy: function() {
+        return this.blocks().filter(function (block) {
+            return block.gameboy() != null
         })
     },
     
-    randomObjectPos: function () {
-        var blocks = this.blocksWithObjPos()
+    randomBandnamePos: function () {
+        var blocks = this.blocksWithBandname()
+        if (blocks.length == 0) { return null }
+        var block = blocks[Math.floor(Math.random()*blocks.length)]
+        
+        return block.objPos()
+    },
+    
+    randomGameboyPos: function () {
+        var blocks = this.blocksWithGameboy()
         if (blocks.length == 0) { return null }
         var block = blocks[Math.floor(Math.random()*blocks.length)]
         
