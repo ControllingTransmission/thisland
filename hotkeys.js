@@ -517,6 +517,9 @@ var skyboxCombos = listener.register_many([
     "prevent_repeat": true,
     "on_keydown"    : function() {
         console.log("pulse key")
+        
+        Ground.shared().performOnBlockObjects("pulse")
+        /*
         var block = Ground.shared().currentBlock()
             console.log("block = ", block)
         if (block) {
@@ -527,6 +530,7 @@ var skyboxCombos = listener.register_many([
                 block.bandname().pulse()
             }
         }
+        */
         
     },
     "on_keyup"      : function(e) {
