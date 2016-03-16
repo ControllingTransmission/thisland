@@ -57,6 +57,26 @@ Block = ideal.Proto.extend().newSlots({
     	    this.addBandName()
         }
     },
+    
+    position: function() {
+        return this._mesh.position
+    },
+    
+    bandnamePos: function () {
+        if (this._bandname == null) { return null }
+        return this.bandname().position.clone().add(this.position())
+    },
+    
+    gameboyPos: function () {
+      if (this._gameboy == null) { return null }
+       return this.gameboy().position.clone().add(this.position())
+    },
+    
+    objPos: function () {
+        var p = this.bandnamePos()
+        if (p) { return p }
+        return this.gameboyPos()
+    },
 
     addGameboy: function () {
         if (this._gameboy) { return }
@@ -72,10 +92,11 @@ Block = ideal.Proto.extend().newSlots({
     
     addBandName: function () {
         if (this._bandname && !this._gameboy) { return }
-      	var bn = new BandName(function(){console.log('loaded');}).init();
+      	var bn = new BandName(function(){ /* console.log('loaded'); */ }).init();
 		bn.position.set(0, -2000, 1000)
 		bn.scale.set(100, 100, 100)
 		bn.rotateX( radians(80) )
+		//bn.speed.rotation.y = Math.PI/400
 		bn.needsUpdate = true
     	this._mesh.add(bn)
     	this._bandname = bn
@@ -159,12 +180,19 @@ Block = ideal.Proto.extend().newSlots({
         return this.ground().mode()
     },
     
-	updateAudio: function(audioBins, t) {
+	updateAudio: function(t) {
+	    Spectrum.audioBin()
 	    
 	    this._material.wireframe = this.ground().wireframe()
 	    
-        if (this.isCameraSection() && this._gameboy) {
-            this._gameboy.update()
+        if (this.isCameraSection()) {
+            if (this._gameboy) {
+                this._gameboy.update()
+            }
+        }
+        
+        if (this._bandname) {
+            this._bandname.update()
         }
         
 		var g = this._geometry
@@ -281,10 +309,10 @@ Ground = ideal.Proto.extend().newSlots({
     
 //    setMode: function (
     
-    updateAudio: function(audioBin) {
+    updateAudio: function() {
         this._t ++
         var self = this
-        this.blocks().forEach(function (block) { block.updateAudio(audioBin, self._t) })
+        this.blocks().forEach(function (block) { block.updateAudio(self._t) })
         return this
     },
     
@@ -382,6 +410,20 @@ Ground = ideal.Proto.extend().newSlots({
     toggleWireframe: function () {
         this._wireframe = !this._wireframe
         return this
+    },
+    
+    blocksWithObjPos: function() {
+        return this.blocks().filter(function (block) {
+            return block.objPos() != null
+        })
+    },
+    
+    randomObjectPos: function () {
+        var blocks = this.blocksWithObjPos()
+        if (blocks.length == 0) { return null }
+        var block = blocks[Math.floor(Math.random()*blocks.length)]
+        
+        return block.objPos()
     },
     
 })

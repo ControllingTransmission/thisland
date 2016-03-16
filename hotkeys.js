@@ -361,7 +361,7 @@ var groundCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      Ground.setMode("wave2")
+      Ground.shared().setMode("wave2")
     },
     "on_keyup"      : function(e) {
     }
@@ -373,7 +373,7 @@ var groundCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      Ground.setMode("wave")
+      Ground.shared().setMode("wave")
     },
     "on_keyup"      : function(e) {
     }
@@ -385,7 +385,7 @@ var groundCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      Ground.setMode("equalizer")
+      Ground.shared().setMode("equalizer")
     },
     "on_keyup"      : function(e) {
     }
@@ -396,7 +396,7 @@ var groundCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      Ground.setMode("spikewaves")
+      Ground.shared().setMode("spikewaves")
     },
     "on_keyup"      : function(e) {
     }
@@ -408,7 +408,7 @@ var groundCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      Ground.setMode("other")
+      Ground.shared().setMode("other")
     },
     "on_keyup"      : function(e) {
     }
@@ -419,7 +419,7 @@ var groundCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      Ground.setMode("pause")
+      Ground.shared().setMode("pause")
     },
     "on_keyup"      : function(e) {
     }
@@ -431,7 +431,7 @@ var groundCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      Ground.setMode("evolve")
+      Ground.shared().setMode("evolve")
     },
     "on_keyup"      : function(e) {
     }
@@ -443,10 +443,39 @@ var groundCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      Ground.toggleWireframe()
+      Ground.shared().toggleWireframe()
     },
     "on_keyup"      : function(e) {
     }
   },
+
+    {
+    "keys"          : groundMod+";",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+        var p = Ground.shared().randomObjectPos().clone()
+        if (p) {
+            console.log(p)
+            p.y = 840
+            
+            var gp = p.clone()
+            gp.z += 4000
+                        
+            var tween = new TWEEN.Tween(camera.position)
+                .to(gp, 1500)
+                .easing(TWEEN.Easing.Quadratic.InOut)
+                 .onUpdate(function() {
+                     camera.lookAt(p)
+                })
+                .onComplete(function(){
+//                     camera.lookAt(p)
+                }).start();
+        }
+    },
+    "on_keyup"      : function(e) {
+    }
+  },  
+  
 
 ])
