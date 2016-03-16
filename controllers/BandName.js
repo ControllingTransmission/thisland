@@ -7,6 +7,11 @@ var BandName = function(onloaded){
   this.colorSet = 0;
   this.onloaded = (onloaded) ? onloaded : function(){};
   this.speed = {
+      /*
+      rotation: new THREE.Vector3( 0, 0, 0 ),
+      position: new THREE.Vector3( 0, 0, 0 ),
+      scale: new THREE.Vector3( 0, 0, 0 ),
+      */
     rotation: {
       x: 0,
       y: 0,
@@ -92,9 +97,18 @@ var BandName = function(onloaded){
   this.update = function(){
     // this.rotation.x += 0.05
     // this.rotation.z += 0.05
+    /*
+    this.rotation.add(this.speed.rotation)
+    this.position.add(this.speed.position)
+    */
+
     this.rotation.x += this.speed.rotation.x
     this.rotation.y += this.speed.rotation.y
     this.rotation.z += this.speed.rotation.z
+    
+    this.position.x += this.speed.position.x
+    this.position.y += this.speed.position.y
+    this.position.z += this.speed.position.z
   };
   
   this.pulse = function () {
@@ -207,6 +221,20 @@ var BandName = function(onloaded){
                   .easing(TWEEN.Easing.Quadratic.In)
                   .start();
    }
+
+   this.startSpinZ = function(){
+       this.speed.rotation.z = 0.01
+
+   }   
+   
+   this.stopSpinZ = function(){
+        this.speed.rotation.z = 0
+        new TWEEN.Tween(this.rotation)
+                  .to({ z: 0 }, 100)
+                  .easing(TWEEN.Easing.Quadratic.In)
+                  .start();
+   }   
+  
 
 }
 BandName.prototype = Object.create(THREE.Object3D.prototype);

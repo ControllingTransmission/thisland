@@ -523,5 +523,27 @@ var pulseCombos = listener.register_many([
         
     },
   },   
+  
+  /*
+    {
+    "keys"          : "r",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {        
+        Ground.shared().performOnBlockObjects("startSpinZ")
+        
+    },
+  },  
+  
+    {
+    "keys"          : "r",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {        
+        Ground.shared().performOnBlockObjects("pulseBig")
+        
+    },
+  },    
+  */
 ])
 
