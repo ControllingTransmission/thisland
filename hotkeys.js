@@ -414,6 +414,34 @@ var cameraCombos = listener.register_many([
   }, 
 ])
 
+var skyboxCombos = listener.register_many([
+  {
+    "keys"          : "9",
+    "is_exclusive"  : false,
+    "prevent_repeat": false,
+    "on_keydown"    : function() {
+      skybox.twinkle()
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  {
+    "keys"          : "0",
+    "is_exclusive"  : false,
+    "prevent_repeat": false,
+    "on_keydown"    : function() {
+      skybox.setSolidColor('#000000')
+    },
+    "on_keyup"      : function(e) {
+      skybox.twinkle()
+    }
+  },
+  
+  
+
+
+])
+
 
 var pulseCombos = listener.register_many([
   {
@@ -471,33 +499,9 @@ var pulseCombos = listener.register_many([
 
     }
   }, 
-])
 
-var skyboxCombos = listener.register_many([
-  {
-    "keys"          : "9",
-    "is_exclusive"  : false,
-    "prevent_repeat": false,
-    "on_keydown"    : function() {
-      skybox.twinkle()
-    },
-    "on_keyup"      : function(e) {
-    }
-  },
-  {
-    "keys"          : "0",
-    "is_exclusive"  : false,
-    "prevent_repeat": false,
-    "on_keydown"    : function() {
-      skybox.setSolidColor('#000000')
-    },
-    "on_keyup"      : function(e) {
-      skybox.twinkle()
-    }
-  },
-  
-  {
-    "keys"          : groundMod+"g",
+    {
+    "keys"          : "g",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -509,7 +513,7 @@ var skyboxCombos = listener.register_many([
   },   
   
    {
-    "keys"          : groundMod+"f",
+    "keys"          : "f",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -519,7 +523,5 @@ var skyboxCombos = listener.register_many([
         
     },
   },   
-  
-
-
 ])
+

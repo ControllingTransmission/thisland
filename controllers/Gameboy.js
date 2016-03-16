@@ -196,6 +196,8 @@ var Gameboy = function(onloaded){
   this.warpBack = function () { this.bandname.warpBack() }
   this.twistOut = function () { this.bandname.twistOut() }
   this.twistBack = function () { this.bandname.twistBack() }
+  this.startSpin = function () { this.bandname.startSpin() }
+  this.stopSpin = function () { this.bandname.stopSpin() }
 
 }
 Gameboy.prototype = Object.create(THREE.Object3D.prototype);
