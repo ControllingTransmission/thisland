@@ -145,56 +145,6 @@ var gameboyCombos = listener.register_many([
 ])
 
 
-var gameboyBandnameCombos = listener.register_many([
-  {
-    "keys"          : gameboyMod+"b",
-    "is_exclusive"  : true,
-    "prevent_repeat": false,
-    "on_keydown"    : function() {
-        var gameboy = currentGameboy()
-        if(gameboy) {
-        
-        if(gameboy.bandname) {
-          gameboy.remove(gameboy.bandname)
-          scene.remove(gameboy.bandname)
-          gameboy.bandname = null
-        } else {
-          gameboy.addBandname()
-        }
-      }
-    },
-    "on_keyup"      : function(e) {
-    }
-  },
-  {
-    "keys"          : "v",
-    "is_exclusive"  : true,
-    "prevent_repeat": false,
-    "on_keydown"    : function() {
-      var gameboy = currentGameboy()
-      gameboy.bandname.warpAway()
-    },
-    "on_keyup"      : function(e) {
-      var gameboy = currentGameboy()
-      gameboy.bandname.warpBack()
-    }
-  },
-
-  {
-    "keys"          : "b",
-    "is_exclusive"  : true,
-    "prevent_repeat": false,
-    "on_keydown"    : function() {
-      var gameboy = currentGameboy()
-      gameboy.bandname.twistOut()
-    },
-    "on_keyup"      : function(e) {
-      var gameboy = currentGameboy()
-      gameboy.bandname.twistBack()
-    }
-  },  
-])
-
 
 var speedScale = 500
 var rotationScale = 0.01
@@ -467,7 +417,7 @@ var cameraCombos = listener.register_many([
 
 var pulseCombos = listener.register_many([
   {
-    "keys"          : "v",
+    "keys"          : "c",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -495,17 +445,17 @@ var pulseCombos = listener.register_many([
   },   
 
   {
-    "keys"          : "b",
+    "keys"          : "n",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
         console.log("pulse key")
         
-        Ground.shared().performOnBlockObjects("warpAway")
+        Ground.shared().performOnBlockObjects("twistOut")
         
     },
     "on_keyup"      : function(e) {
-        Ground.shared().performOnBlockObjects("warpBack")
+        Ground.shared().performOnBlockObjects("twistBack")
 
     }
   }, 
