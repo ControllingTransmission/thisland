@@ -113,6 +113,22 @@ var BandName = function(onloaded){
         })        
         .start();        
   };
+  
+  this.pulseBig = function () {
+      
+      if (!this._baseScale) {
+          this._baseScale = this.scale.clone()
+          this._endScale = this.scale.clone().multiplyScalar(2)
+      }
+      var self = this
+
+      var dt = 50
+      new TWEEN.Tween(self.scale).to(self._endScale, dt)
+         .onComplete(function() {
+            new TWEEN.Tween(self.scale).to(self._baseScale, dt).start();
+        })        
+        .start();        
+  };
 
   this.spin = function () {
       console.log("bandname spin")
