@@ -437,7 +437,47 @@ var skyboxCombos = listener.register_many([
     }
   },
   
+  {
+    "keys"          : "1",
+    "is_exclusive"  : false,
+    "prevent_repeat": false,
+    "on_keydown"    : function() {
+      skybox.setColors(['#00aaff'])
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  {
+    "keys"          : "2",
+    "is_exclusive"  : false,
+    "prevent_repeat": false,
+    "on_keydown"    : function() {
+      skybox.setColors([COLORSETS[2][2]])
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  {
+    "keys"          : "3",
+    "is_exclusive"  : false,
+    "prevent_repeat": false,
+    "on_keydown"    : function() {
+      skybox.setColors([COLORSETS[0][2]])
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
   
+  {
+    "keys"          : "4",
+    "is_exclusive"  : false,
+    "prevent_repeat": false,
+    "on_keydown"    : function() {
+      skybox.setColors([COLORSETS[4][2]])
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
 
 
 ])
