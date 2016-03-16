@@ -12,6 +12,7 @@ function initSkybox(){
 
 	skybox.segments = segments;
 	skybox.pulseColors = [];
+	skybox.on = true
 
     
 	skybox.setColors = function(colorset) {
@@ -42,6 +43,16 @@ function initSkybox(){
 
 	skybox.pulseColor = function(color) {
 		this.pulseColors.push({color: color, start: null, duration: 1000})
+	}
+
+	skybox.toggle = function() {
+		if(this.on) {
+			this.on = false
+			this.setSolidColor('#000000')
+		} else {
+			this.on = true
+			this.twinkle()
+		}
 	}
 
 	skybox.update = function(time) {

@@ -436,6 +436,16 @@ var skyboxCombos = listener.register_many([
       skybox.twinkle()
     }
   },
+  {
+    "keys"          : ")",
+    "is_exclusive"  : false,
+    "prevent_repeat": false,
+    "on_keydown"    : function() {
+      skybox.toggle()
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
   
   {
     "keys"          : "1",
