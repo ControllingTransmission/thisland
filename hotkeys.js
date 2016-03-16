@@ -431,7 +431,7 @@ var groundCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-      Ground.shared().setMode("evolve")
+        Ground.shared().setMode("evolve")
     },
     "on_keyup"      : function(e) {
     }
