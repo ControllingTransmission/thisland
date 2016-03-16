@@ -454,10 +454,10 @@ var groundCombos = listener.register_many([
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
-        var p = Ground.shared().randomObjectPos().clone()
+        var p = Ground.shared().randomBandnamePos().clone()
         if (p) {
             console.log(p)
-            p.y = 840
+            p.y = 980
             
             var gp = p.clone()
             gp.z += 4000
@@ -467,9 +467,31 @@ var groundCombos = listener.register_many([
                 .easing(TWEEN.Easing.Quadratic.InOut)
                  .onUpdate(function() {
                      camera.lookAt(p)
-                })
-                .onComplete(function(){
-//                     camera.lookAt(p)
+                }).start();
+        }
+    },
+    "on_keyup"      : function(e) {
+    }
+  },  
+ 
+    {
+    "keys"          : groundMod+"l",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+        var p = Ground.shared().randomGameboyPos().clone()
+        if (p) {
+            console.log(p)
+            p.y = 980
+            
+            var gp = p.clone()
+            gp.z += 2000
+                        
+            var tween = new TWEEN.Tween(camera.position)
+                .to(gp, 1500)
+                .easing(TWEEN.Easing.Quadratic.InOut)
+                 .onUpdate(function() {
+                     camera.lookAt(p)
                 }).start();
         }
     },
