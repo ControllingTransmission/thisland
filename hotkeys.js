@@ -17,14 +17,22 @@ var runnerGroundCombos = listener.register_many([
     "keys"          : "escape",
     "is_exclusive"  : true,
     "on_keydown"    : function() {
+      var gameboy = currentGameboy()
       camera.position.x = 0;
       camera.position.y = 1000;
       camera.position.z = 2500;
       
       gameboy.position.x = -6;
-      gameboy.position.y = 840;
-      gameboy.position.z = 2290;
+      gameboy.position.y = -2300;
+      gameboy.position.z = 840;
 
+      gameboy.rotation.x = 1.5707963267948963
+      gameboy.rotation.y = 0
+      gameboy.rotation.z = 0
+
+      gameboy.speed.rotation.x = 0
+      gameboy.speed.rotation.y = 0
+      gameboy.speed.rotation.z = 0
     },
     "on_keyup"      : function(e) {
     }
@@ -56,7 +64,7 @@ var gameboyCombos = listener.register_many([
          var gameboy = currentGameboy()
          if (gameboy) {
           var tween = new TWEEN.Tween(gameboy.position)
-            .to({ z: 0 }, 2000)
+            .to({ y: 0 }, 2000)
             .easing(TWEEN.Easing.Quadratic.In)
             .onComplete(function(){
               gameboy.speed.rotation.y = 0.01
@@ -475,7 +483,7 @@ var skyboxCombos = listener.register_many([
     }
   },
 
-    {
+  {
     "keys"          : groundMod+";",
     "is_exclusive"  : false,
     "prevent_repeat": true,
