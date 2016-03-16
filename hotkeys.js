@@ -511,8 +511,7 @@ var skyboxCombos = listener.register_many([
             p.y = 980
             
             var gp = p.clone()
-            gp.z += 2000
-            gp.x += 2000*(Math.random() - .5)
+            gp.z += 2500
                         
             var tween = new TWEEN.Tween(camera.position)
                 .to(gp, 1500)
