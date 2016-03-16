@@ -58,7 +58,7 @@ currentGameboy = function () {
 
 var gameboyCombos = listener.register_many([
   {
-    "keys"          : gameboyMod+"m",
+    "keys"          : "1 m",
     "is_exclusive"  : true,
     "on_keydown"    : function() {
          var gameboy = currentGameboy()
@@ -84,56 +84,9 @@ var gameboyCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   },
-  {
-    "keys"          : gameboyMod+"=",
-    "is_exclusive"  : true,
-    "prevent_repeat": true,
-    "on_keydown"    : function() {
-
-        // add gameboy
-    },
-    "on_keyup"      : function(e) {
-    }
-  },
-  {
-    "keys"          : gameboyMod+"-",
-    "is_exclusive"  : true,
-    "prevent_repeat": true,
-    "on_keydown"    : function() {
-       // remove gameboy
-    },
-    "on_keyup"      : function(e) {
-    }
-  },
-  {
-    "keys"          : gameboyMod+"0",
-    "is_exclusive"  : true,
-    "prevent_repeat": true,
-    "on_keydown"    : function() {
-      console.log('remove');
-             // remove gameboy
-
-    },
-    "on_keyup"      : function(e) {
-    }
-  },
 
   {
-    "keys"          : gameboyMod+"u",
-    "is_exclusive"  : true,
-    "prevent_repeat": true,
-    "on_keydown"    : function() {
-        var gameboy = currentGameboy()
-        if (gameboy) {
-            gameboy.colorizeScreen(COLORSETS[4][0])
-        }
-    },
-    "on_keyup"      : function(e) {
-    }
-  },
-
-  {
-    "keys"          : gameboyMod+"l",
+    "keys"          : "l",
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -155,8 +108,10 @@ var gameboyCombos = listener.register_many([
     }
   },
 
+  // TODO Need remove audio line
+
   {
-    "keys"          : gameboyMod+"o",
+    "keys"          : "o",
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -172,7 +127,7 @@ var gameboyCombos = listener.register_many([
     }
   },
   {
-    "keys"          : gameboyMod+".",
+    "keys"          : ".",
     "is_exclusive"  : true,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -189,17 +144,6 @@ var gameboyCombos = listener.register_many([
   },
 ])
 
-
-function manipulateGameboyBandnames(action) {
-    var gameboy = currentGameboy()
-    if(gameboy && gameboy.bandname) {
-      var o = gameboy.bandname.children[0].children
-      console.log(gameboy.bandname.children[0]);
-      for(var x=0; x<o.length; x++){
-        action(x, o[x])
-      }
-    }
-}
 
 var gameboyBandnameCombos = listener.register_many([
   {
@@ -223,7 +167,7 @@ var gameboyBandnameCombos = listener.register_many([
     }
   },
   {
-    "keys"          : gameboyMod+"x",
+    "keys"          : "v",
     "is_exclusive"  : true,
     "prevent_repeat": false,
     "on_keydown"    : function() {
@@ -237,7 +181,7 @@ var gameboyBandnameCombos = listener.register_many([
   },
 
   {
-    "keys"          : gameboyMod+"c",
+    "keys"          : "b",
     "is_exclusive"  : true,
     "prevent_repeat": false,
     "on_keydown"    : function() {
@@ -252,7 +196,7 @@ var gameboyBandnameCombos = listener.register_many([
 ])
 
 
-var speedScale = 100
+var speedScale = 500
 var rotationScale = 0.01
 var movementCombos = listener.register_many([
   {
@@ -352,7 +296,7 @@ var groundCombos = listener.register_many([
   // ground 
   
   {
-    "keys"          : groundMod+"n",
+    "keys"          : "y",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -364,7 +308,7 @@ var groundCombos = listener.register_many([
   
   
    {
-    "keys"          : groundMod+"m",
+    "keys"          : "u",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -376,7 +320,7 @@ var groundCombos = listener.register_many([
 
   
    {
-    "keys"          : groundMod+"b",
+    "keys"          : "i",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -387,7 +331,7 @@ var groundCombos = listener.register_many([
   },
   
     {
-    "keys"          : groundMod+"v",
+    "keys"          : "o",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -399,7 +343,7 @@ var groundCombos = listener.register_many([
   
    
     {
-    "keys"          : groundMod+",",
+    "keys"          : "p",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -410,7 +354,7 @@ var groundCombos = listener.register_many([
   },
   
      {
-    "keys"          : groundMod+".",
+    "keys"          : "[",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -422,7 +366,7 @@ var groundCombos = listener.register_many([
   
    
      {
-    "keys"          : groundMod+"/",
+    "keys"          : "]",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -432,7 +376,7 @@ var groundCombos = listener.register_many([
     }
   },
   {
-    "keys"          : groundMod+"'",
+    "keys"          : "'",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -443,32 +387,9 @@ var groundCombos = listener.register_many([
   },
 ])
 
-
-var skyboxCombos = listener.register_many([
-  {
-    "keys"          : skyboxMod+"n",
-    "is_exclusive"  : false,
-    "prevent_repeat": false,
-    "on_keydown"    : function() {
-      skybox.twinkle()
-    },
-    "on_keyup"      : function(e) {
-    }
-  },
-  {
-    "keys"          : skyboxMod+"b",
-    "is_exclusive"  : false,
-    "prevent_repeat": false,
-    "on_keydown"    : function() {
-      skybox.setSolidColor('#000000')
-    },
-    "on_keyup"      : function(e) {
-      skybox.twinkle()
-    }
-  },
-
-  {
-    "keys"          : groundMod+";",
+var cameraCombos = listener.register_many([
+   {
+    "keys"          : "/",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -493,7 +414,7 @@ var skyboxCombos = listener.register_many([
   },  
  
     {
-    "keys"          : groundMod+"k",
+    "keys"          : "/",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -518,7 +439,7 @@ var skyboxCombos = listener.register_many([
   }, 
   
     {
-    "keys"          : groundMod+"l",
+    "keys"          : ".",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -541,9 +462,12 @@ var skyboxCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   }, 
-  
+])
+
+
+var pulseCombos = listener.register_many([
   {
-    "keys"          : groundMod+"j",
+    "keys"          : "v",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -567,7 +491,7 @@ var skyboxCombos = listener.register_many([
   }, 
 
   {
-    "keys"          : groundMod+"u",
+    "keys"          : "b",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
@@ -581,6 +505,46 @@ var skyboxCombos = listener.register_many([
 
     }
   },   
+
+  {
+    "keys"          : "b",
+    "is_exclusive"  : false,
+    "prevent_repeat": true,
+    "on_keydown"    : function() {
+        console.log("pulse key")
+        
+        Ground.shared().performOnBlockObjects("warpAway")
+        
+    },
+    "on_keyup"      : function(e) {
+        Ground.shared().performOnBlockObjects("warpBack")
+
+    }
+  }, 
+])
+
+var skyboxCombos = listener.register_many([
+  {
+    "keys"          : "9",
+    "is_exclusive"  : false,
+    "prevent_repeat": false,
+    "on_keydown"    : function() {
+      skybox.twinkle()
+    },
+    "on_keyup"      : function(e) {
+    }
+  },
+  {
+    "keys"          : "0",
+    "is_exclusive"  : false,
+    "prevent_repeat": false,
+    "on_keydown"    : function() {
+      skybox.setSolidColor('#000000')
+    },
+    "on_keyup"      : function(e) {
+      skybox.twinkle()
+    }
+  },
   
   {
     "keys"          : groundMod+"g",
