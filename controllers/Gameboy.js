@@ -1,4 +1,4 @@
-var Gameboy = function(){
+var Gameboy = function(onloaded){
   THREE.Object3D.apply(this, arguments);
   this.renderOn = true;
   this.model = null;
@@ -8,6 +8,7 @@ var Gameboy = function(){
   this.audioLines = []
   this.audioGain = 20;
   this.colorSet = 0;
+  this.onloaded = onloaded;
   this.speed = {
     rotation: {
       x: 0,
@@ -62,13 +63,13 @@ var Gameboy = function(){
   }
 
   this.orient = function() {
-    console.log('GAMEBOY ORIENT', Gameboy.materials);
     this.gameboy = Gameboy.model.clone()
     for(var c=0; c<Gameboy.model.children.length; c++) {
       this.gameboy.children[c].material = Gameboy.model.children[c].material.clone()
     }
     this.gameboy.children[3].material.side = THREE.DoubleSide
     this.add( this.gameboy );
+    this.onloaded();
   }
 
   this.colorize = function(bodyColor) {

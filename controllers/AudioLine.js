@@ -42,7 +42,7 @@ var AudioLine = function(onloaded){
     // console.log('updating');
     var g = this.plane.geometry;
     for(var i=0; i<=(this.planeWidth+1); i++) {
-      var binIndex = Math.floor((32 -1) * i/(this.planeWidth+1))
+      var binIndex = Math.floor((16 -1) * i/(this.planeWidth+1))
       var x = audioBin[binIndex] * this.audioGain;
       g.vertices[i].y = x;
       g.vertices[i+this.planeWidth].y = x - 1;
@@ -51,18 +51,15 @@ var AudioLine = function(onloaded){
   };
 
   this.setColors = function(colorset){
-    console.log('colors');
     var geometry = this.plane.geometry;
     var length = geometry.faces.length;
     var colorIndex = Math.floor(Math.random()*colorset.length)
-    console.log('color', colorIndex);
     for(var i = 0; i < length; i++) {
       var color = new THREE.Color(colorset[colorIndex]);
       var hsl = color.getHSL();
       geometry.faces[i].color.setHSL(hsl.h, hsl.s, hsl.l + Math.random()*0.05)
     }
     geometry.colorsNeedUpdate = true;
-    console.log(geometry.colorsNeedUpdate);
   }
 
   this.rotateColorset = function(dist){
