@@ -300,9 +300,11 @@ Ground = ideal.Proto.extend().newSlots({
 	mode: "equalizer", // "wave", "wave2", "equalizer", "random", "pause"
 	currentBlock: null,
 	wireframe: false,
+	blockPool: null,
 }).setSlots({
     init: function () {
         this.setBlocks([])
+        this.setBlockPool([])
         
         //var block = Block.clone().add()
         //this.blocks().push(block)
@@ -344,22 +346,26 @@ Ground = ideal.Proto.extend().newSlots({
             return
         }
 
-        var block = Block.clone().setSectionPos(p)
-        this.addBlock(block)     
+        var block = this.newBlock().setSectionPos(p)
         return this   
     },
     
-    addBlock: function(block) {
+    newBlock: function() {
+        var block = this.blockPool().pop()
+        if (!block) {
+            block = Block.clone()
+        }
         block.setGround(this)
         this.blocks().push(block)
         block.add()
-        return this
+        return block
     },
     
     removeBlock: function(block) {
         //console.log("removing block ", block.sectionPos())
         this.blocks().remove(block)
         block.remove()
+        this.blockPool().push(block)
         return this
     },
     
