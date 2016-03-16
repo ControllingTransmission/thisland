@@ -62,6 +62,11 @@ Block = ideal.Proto.extend().newSlots({
         return this._mesh.position
     },
     
+    obj: function () {
+        if (this._gameboy) { return this._gameboy; }
+        return this._bandname
+    },
+    
     bandnamePos: function () {
         if (this._bandname == null) { return null }
         return this.bandname().position.clone().add(this.position())
@@ -435,6 +440,16 @@ Ground = ideal.Proto.extend().newSlots({
         var block = blocks[Math.floor(Math.random()*blocks.length)]
         
         return block.objPos()
+    },
+    
+    performOnBlockObjects: function(msg) {
+        this.blocks().forEach(function (block) {
+            var obj = block.obj()
+            if (obj && obj[msg]) {
+                obj[msg].apply(obj)
+            }
+        })
+        
     },
     
 })
