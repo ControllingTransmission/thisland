@@ -1,23 +1,11 @@
-# This Land
+# Chipzel GDC 2016 visuals
 
-Draft repository for visuals scheduled on 3/15/16
+### [View the live demo on Github](https://controllingtransmission.github.io/thisland/)
+
+Visuals for Chipzel's performance at the DNA Lounge Game Developer's Conference on 3/15/16
 
 Requires SSL for microphone support. Run locally with `python server.py`
 
-## TODO ideas
+## Show Images
 
-* Gameboy object with visuals on screen
-* Endless runner plane
-	* Generated mountains in distance
-	* Color of polygons change based on height
-* Tree generation
-	* Use shaders to animate growth?
-	* Use static model and animate?
-* Skybox half sunny half dark
-	* Rotate
-	* Rotate sun?
-* Fly into top down view of runner plane
-* Fly out to planet view
-* Camera fly between planets
-* Camera switch between planets
-* Multiple skyboxes for different planets with different views
+![Chipzel 1](show/Cdpsp5MWoAEN0g7.jpg)
