@@ -2,6 +2,8 @@
 
 ### [View the live demo on Github](https://controllingtransmission.github.io/thisland/)
 
+### [Artist example soundtrack](http://chipzel.co.uk/album/spectra)
+
 Visuals for Chipzel's performance at the DNA Lounge Game Developer's Conference on 3/15/16
 
 Requires SSL for microphone support. Run locally with `python server.py`
