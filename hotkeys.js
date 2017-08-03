@@ -3,6 +3,18 @@ var gameboyMod = "1 "
 var groundMod = "2 "
 var skyboxMod = "3 "
 
+var instructions = listener.register_many([
+  {
+    "keys"          : "?",
+    "is_exclusive"  : true,
+    "on_keydown"    : function() {
+    },
+    "on_keyup"      : function(e) {
+      $('#instructions').toggle();
+    }
+  },
+])
+
 var runnerGroundCombos = listener.register_many([
   {
     "keys"          : "space",
@@ -21,7 +33,7 @@ var runnerGroundCombos = listener.register_many([
       camera.position.x = 0;
       camera.position.y = 1000;
       camera.position.z = 2500;
-      
+
       gameboy.position.x = -6;
       gameboy.position.y = -2300;
       gameboy.position.z = 840;
@@ -45,7 +57,7 @@ function addGameboy(){
     var g = new Gameboy(function(){
       this.colorize(COLORSETS[4][ r % COLORSETS[4].length])
     }).init()
-      
+
 
    return g
 
@@ -243,8 +255,8 @@ var movementCombos = listener.register_many([
 
 
 var groundCombos = listener.register_many([
-  // ground 
-  
+  // ground
+
   {
     "keys"          : "y",
     "is_exclusive"  : false,
@@ -255,8 +267,8 @@ var groundCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   },
-  
-  
+
+
    {
     "keys"          : "u",
     "is_exclusive"  : false,
@@ -268,7 +280,7 @@ var groundCombos = listener.register_many([
     }
   },
 
-  
+
    {
     "keys"          : "i",
     "is_exclusive"  : false,
@@ -279,7 +291,7 @@ var groundCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   },
-  
+
     {
     "keys"          : "o",
     "is_exclusive"  : false,
@@ -290,8 +302,8 @@ var groundCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   },
-  
-   
+
+
     {
     "keys"          : "p",
     "is_exclusive"  : false,
@@ -302,7 +314,7 @@ var groundCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   },
-  
+
      {
     "keys"          : "[",
     "is_exclusive"  : false,
@@ -313,8 +325,8 @@ var groundCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   },
-  
-   
+
+
      {
     "keys"          : "]",
     "is_exclusive"  : false,
@@ -346,11 +358,11 @@ var cameraCombos = listener.register_many([
         var p = Ground.shared().randomBandnamePos().clone()
         if (p) {
             p.y = 980
-            
+
             var gp = p.clone()
             gp.z += 4000
             gp.x += 4000*(Math.random() - .5)
-                        
+
             var tween = new TWEEN.Tween(camera.position)
                 .to(gp, 1500)
                 .easing(TWEEN.Easing.Quadratic.InOut)
@@ -361,8 +373,8 @@ var cameraCombos = listener.register_many([
     },
     "on_keyup"      : function(e) {
     }
-  },  
- 
+  },
+
     {
     "keys"          : "/",
     "is_exclusive"  : false,
@@ -372,10 +384,10 @@ var cameraCombos = listener.register_many([
         if (p) {
             console.log(p)
             p.y = 980
-            
+
             var gp = p.clone()
             gp.z += 4500
-                        
+
             var tween = new TWEEN.Tween(camera.position)
                 .to(gp, 1500)
                 .easing(TWEEN.Easing.Quadratic.InOut)
@@ -386,8 +398,8 @@ var cameraCombos = listener.register_many([
     },
     "on_keyup"      : function(e) {
     }
-  }, 
-  
+  },
+
     {
     "keys"          : ".",
     "is_exclusive"  : false,
@@ -397,10 +409,10 @@ var cameraCombos = listener.register_many([
         if (p) {
             console.log(p)
             p.y = 980
-            
+
             var gp = p.clone()
             gp.z += 2500
-                        
+
             var tween = new TWEEN.Tween(camera.position)
                 .to(gp, 1500)
                 .easing(TWEEN.Easing.Quadratic.InOut)
@@ -411,7 +423,7 @@ var cameraCombos = listener.register_many([
     },
     "on_keyup"      : function(e) {
     }
-  }, 
+  },
 ])
 
 var skyboxCombos = listener.register_many([
@@ -446,7 +458,7 @@ var skyboxCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   },
-  
+
   {
     "keys"          : "1",
     "is_exclusive"  : false,
@@ -477,7 +489,7 @@ var skyboxCombos = listener.register_many([
     "on_keyup"      : function(e) {
     }
   },
-  
+
   {
     "keys"          : "4",
     "is_exclusive"  : false,
@@ -504,7 +516,7 @@ var pulseCombos = listener.register_many([
     },
     "on_keyup"      : function(e) {
     }
-  }, 
+  },
 
   {
     "keys"          : "v",
@@ -516,8 +528,8 @@ var pulseCombos = listener.register_many([
     },
     "on_keyup"      : function(e) {
     }
-  }, 
-  
+  },
+
    {
     "keys"          : groundMod+"h",
     "is_exclusive"  : false,
@@ -528,7 +540,7 @@ var pulseCombos = listener.register_many([
     },
     "on_keyup"      : function(e) {
     }
-  }, 
+  },
 
   {
     "keys"          : "b",
@@ -536,15 +548,15 @@ var pulseCombos = listener.register_many([
     "prevent_repeat": true,
     "on_keydown"    : function() {
         console.log("pulse key")
-        
+
         Ground.shared().performOnBlockObjects("warpAway")
-        
+
     },
     "on_keyup"      : function(e) {
         Ground.shared().performOnBlockObjects("warpBack")
 
     }
-  },   
+  },
 
   {
     "keys"          : "n",
@@ -552,15 +564,15 @@ var pulseCombos = listener.register_many([
     "prevent_repeat": true,
     "on_keydown"    : function() {
         console.log("pulse key")
-        
+
         Ground.shared().performOnBlockObjects("twistOut")
-        
+
     },
     "on_keyup"      : function(e) {
         Ground.shared().performOnBlockObjects("twistBack")
 
     }
-  }, 
+  },
 
     {
     "keys"          : "g",
@@ -568,44 +580,44 @@ var pulseCombos = listener.register_many([
     "prevent_repeat": true,
     "on_keydown"    : function() {
         console.log("g key")
-        
+
         Ground.shared().performOnBlockObjects("startSpin")
-        
+
     },
-  },   
-  
+  },
+
    {
     "keys"          : "f",
     "is_exclusive"  : false,
     "prevent_repeat": true,
     "on_keydown"    : function() {
         console.log("g key")
-        
+
         Ground.shared().performOnBlockObjects("stopSpin")
-        
+
     },
-  },   
-  
+  },
+
   /*
     {
     "keys"          : "r",
     "is_exclusive"  : false,
     "prevent_repeat": true,
-    "on_keydown"    : function() {        
+    "on_keydown"    : function() {
         Ground.shared().performOnBlockObjects("startSpinZ")
-        
+
     },
-  },  
-  
+  },
+
     {
     "keys"          : "r",
     "is_exclusive"  : false,
     "prevent_repeat": true,
-    "on_keydown"    : function() {        
+    "on_keydown"    : function() {
         Ground.shared().performOnBlockObjects("pulseBig")
-        
+
     },
-  },    
+  },
   */
 ])
 

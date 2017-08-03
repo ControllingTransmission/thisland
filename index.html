@@ -33,13 +33,20 @@
 
 		<div id="instructions">
 			1234: sky colors<br/>
+			9: redraw sky<br/>
+			0: black sky<br/>
+			): toggle black sky<br/>
 			wasd: move/rotate camera<br/>
-			.(period): fly to gameboy<br/>
+			shift+wasd: fast move/rotate<br/>
+			.: fly to gameboy<br/>
+			/: fly to band name<br/>
 			yuiop: ground effects<br/>
-			cv: bounce gameboy<br/>
+			': wireframe ground<br/>
+			[]: animate/stop ground
+			cv: pulse gameboys/bandnames<br/>
 			bn: letter effects<br/>
-			g: spin text<br/>
-			f: spin text to start<br/>
+			g: spin band name<br/>
+			f: spin band name to start<br/>
 			?: instructions
 		</div>
 
@@ -145,7 +152,7 @@
 			var mouseX = 0, mouseY = 0;
 			var windowHalfX = window.innerWidth / 2;
 			var windowHalfY = window.innerHeight / 2;
-			
+
 			$(document).ready(function()
 			{
 				init();
@@ -180,7 +187,7 @@
 				scene.addObject = function(object){
 					this.add(object)
 				}
-				
+
 				Ground.shared()
 
 				light = null;
@@ -209,7 +216,7 @@
 				window.light = light
 				light.position.set( 0, 500, 3000 );
 				scene.add( light );
-				
+
 				var ambientLight = new THREE.AmbientLight( 0x404040 ); // soft white light
                 scene.add( ambientLight )
 
@@ -259,22 +266,22 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 			}
 
-			function animate(time) 
+			function animate(time)
 			{
 				requestAnimationFrame( animate );
 				render(time);
 			}
 
-			function render(time) 
+			function render(time)
 			{
 				bins = Spectrum.timeStep()
 				//console.log("bins: " + JSON.stringify(bins))
 				//console.log("bins: " + bins.length)
-				var timer = Date.now() *.009 
+				var timer = Date.now() *.009
 
 				for(var c in scene.children) {
 					var child = scene.children[c];
-					
+
 					if(child.renderOn) { child.update(bins) }
 				}
 
@@ -282,7 +289,7 @@
 
 				Ground.shared().update().updateAudio(bins)
 				camera.update()
-				
+
 				var p = camera.position
 				//window.light.position.set( p.x, p.y, p.z );
 
