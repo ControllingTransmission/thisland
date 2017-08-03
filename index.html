@@ -10,9 +10,31 @@
 				margin: 0px;
 				overflow: hidden;
 			}
+
+			#instructions {
+				position: absolute;
+				top: 10px;
+				right: 10px;
+				text-align: left;
+				color: #fff;
+				font-family: Courier;
+				font-size: 15px;
+			}
 		</style>
 	</head>
 	<body>
+
+		<div id="instructions">
+			1234: sky colors<br/>
+			wasd: move/rotate camera<br/>
+			.(period): fly to gameboy<br/>
+			yuiop: ground effects<br/>
+			cv: bounce gameboy<br/>
+			bn: letter effects<br/>
+			g: spin text<br/>
+			f: spin text to start<br/>
+			?: instructions
+		</div>
 
 		<script src="js/jquery.min.js"></script>
 		<script src="js/keypress-2.1.3.min.js"></script>
@@ -34,10 +56,10 @@
 		<script src="controllers/Skybox.js"></script>
 
 		<script src="hotkeys.js"></script>
-		
+
 
 		<script>
-		
+
 			// COLORSETS = {}
 			// COLORSETS.RAINBOWBRITE = new Array('#71c8bf', '#1ba554', '#cad93b', '#fef02f', '#fbb62c', '#f38a2e', '#ee592c', '#ea1d2b', '#b42767', '#65328f', '#52529f', '#20aeda');
 
@@ -103,22 +125,22 @@
 
 			//PI = 3.14159265359
 
-			
+
 			var container;
 
 			var camera, scene, renderer, tree, skin, planets;
 			planets = []
 			gameboys = []
-			
+
 			$(document).ready(function()
 			{
 				init();
 				animate();
 			})
-			
-			function init() 
+
+			function init()
 			{
-				
+
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 
@@ -210,29 +232,29 @@
 				object = createShape(2);
 				return object
 			}
-			
-			function onWindowResize() 
+
+			function onWindowResize()
 			{
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
 				renderer.setSize( window.innerWidth, window.innerHeight );
 			}
 
-			function animate() 
+			function animate()
 			{
 				requestAnimationFrame( animate );
 				render();
 			}
 
-			function render() 
+			function render()
 			{
 				bins = Spectrum.timeStep()
 				//console.log("bins: " + JSON.stringify(bins))
-				var timer = Date.now() *.009 
+				var timer = Date.now() *.009
 
 				for(var c in scene.children) {
 					var child = scene.children[c];
-					
+
 					if(child.renderOn) { child.update() }
 				}
 				runnerGround.update(bins)
@@ -245,15 +267,15 @@
 
 				renderer.render( sceneCube, cameraCube );
 				renderer.render( scene, camera );
-				
+
 			}
 
 			function setupBindings()
 			{
-				
+
 			}
 
-			
+
 		</script>
 	</body>
 </html>
