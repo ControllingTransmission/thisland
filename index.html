@@ -9,6 +9,7 @@
 				background-color: #000;
 				margin: 0px;
 				overflow: hidden;
+				cursor: none;
 			}
 
 			#instructions {
@@ -23,6 +24,12 @@
 		</style>
 	</head>
 	<body>
+		<script type="text/javascript">
+			function radians(angle){
+				//Angle supplied in degrees, needs to be converted to radians
+				return angle * (Math.PI / 180);
+			}
+		</script>
 
 		<div id="instructions">
 			1234: sky colors<br/>
@@ -39,19 +46,24 @@
 		<script src="js/jquery.min.js"></script>
 		<script src="js/keypress-2.1.3.min.js"></script>
 
+		<script src="js/ideal.js"></script>
 		<script src="js/three.min.js"></script>
 		<script src="js/Object3DPlus.js"></script>
 		<script src="js/loaders/DDSLoader.js"></script>
 		<script src="js/loaders/MTLLoader.js"></script>
 		<script src="js/loaders/OBJLoader.js"></script>
 
+		<script src="js/Tween.js"></script>
+
     <script src="AudioContextMonkeyPatch.js"></script>
 		<script src="Spectrum.js"></script>
 
 		<script src="controllers/Trees.js"></script>
 		<script src="controllers/Planet.js"></script>
-		<script src="controllers/RunnerGround.js"></script>
+		<script src="controllers/Ground.js"></script>
+
 		<script src="controllers/BandName.js"></script>
+		<script src="controllers/AudioLine.js"></script>
 		<script src="controllers/Gameboy.js"></script>
 		<script src="controllers/Skybox.js"></script>
 
@@ -130,8 +142,10 @@
 
 			var camera, scene, renderer, tree, skin, planets;
 			planets = []
-			gameboys = []
-
+			var mouseX = 0, mouseY = 0;
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+			
 			$(document).ready(function()
 			{
 				init();
@@ -140,14 +154,14 @@
 
 			function init()
 			{
-
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 
 				camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 4000000 );
-				camera.position.z = 2500;
-				camera.position.y = 300;
+				camera.position.z = 2200;
+				camera.position.y = 1000;
 				camera.update = function() {
+					// this.speed.rotation.x = - ( mouseY ) * .0005;
 					this.translateX(this.speed.position.x)
 					this.translateY(this.speed.position.y)
 					this.translateZ(this.speed.position.z)
@@ -158,13 +172,16 @@
 				camera.renderOn = true
 
 				cameraCube = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 100000 );
-				cameraCube.rotation.speed = {x:0, y:0.005, z:0.005}
+				cameraCube.rotation.speed = {x:0, y:0.001, z:0.001}
 
 				scene = new THREE.Scene();
+				window.scene = scene
 				sceneCube = new THREE.Scene();
 				scene.addObject = function(object){
 					this.add(object)
 				}
+				
+				Ground.shared()
 
 				light = null;
 				var object;
@@ -188,8 +205,13 @@
 				scene.add( spotLight );
 
 				var light = new THREE.HemisphereLight( 0xcccccc, 0x080820, 1 );
+				//var light = new THREE.PointLight( 0xcccccc, 1, 0, 1);
+				window.light = light
 				light.position.set( 0, 500, 3000 );
 				scene.add( light );
+				
+				var ambientLight = new THREE.AmbientLight( 0x404040 ); // soft white light
+                scene.add( ambientLight )
 
 				// light = new THREE.DirectionalLight( 0xffffff );
 				// light.position.set( 200, 2000, 3500 );
@@ -205,26 +227,23 @@
 				window.addEventListener( 'resize', onWindowResize, false );
 				setupBindings()
 
-				initSkybox();
+				skybox = initSkybox();
 
-				runnerGround = new RunnerGround().init();
-
+                Ground.shared().update()
+                Ground.shared().currentBlock().addGameboy()
+/*
 				bandname = new BandName(function(){console.log('loaded');}).init();
 				bandname.position.set(0, 1000, -2000)
 				bandname.scale.set(100, 100, 100)
 				bandname.needsUpdate = true
 				scene.add(bandname)
+				*/
 
-				gameboy = new Gameboy().init();
 
 				// planet = new Planet().init();
 
 			}
 
-			function radians(angle){
-				//Angle supplied in degrees, needs to be converted to radians
-				return angle * (Math.PI / 180);
-			}
 
 
 			function addObject()
@@ -240,25 +259,32 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 			}
 
-			function animate()
+			function animate(time) 
 			{
 				requestAnimationFrame( animate );
-				render();
+				render(time);
 			}
 
-			function render()
+			function render(time) 
 			{
 				bins = Spectrum.timeStep()
 				//console.log("bins: " + JSON.stringify(bins))
-				var timer = Date.now() *.009
+				//console.log("bins: " + bins.length)
+				var timer = Date.now() *.009 
 
 				for(var c in scene.children) {
 					var child = scene.children[c];
-
-					if(child.renderOn) { child.update() }
+					
+					if(child.renderOn) { child.update(bins) }
 				}
-				runnerGround.update(bins)
+
+				TWEEN.update()
+
+				Ground.shared().update().updateAudio(bins)
 				camera.update()
+				
+				var p = camera.position
+				//window.light.position.set( p.x, p.y, p.z );
 
 				cameraCube.rotation.x += cameraCube.rotation.speed.x
 				cameraCube.rotation.y += cameraCube.rotation.speed.y

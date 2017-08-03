@@ -1,104 +1,91 @@
 function initSkybox(){
-	var urlPrefixes = [
-		"img/painted-",
-		"img/painted2-",
-		"img/painted3-"
-	]
-	// var urlPrefix = "img/s_";
-	// var urls = [ urlPrefix + "px.jpg", urlPrefix + "nx.jpg",
-	//     urlPrefix + "py.jpg", urlPrefix + "ny.jpg",
-	//     urlPrefix + "pz.jpg", urlPrefix + "nz.jpg" ];
+	var segments = 32
+	var geometry = new THREE.SphereGeometry( 100000, segments, segments );
+	var material = new THREE.MeshBasicMaterial( {
+			side: THREE.DoubleSide,
+			//side: THREE.BackSide,
+			vertexColors: THREE.FaceColors,
+		} );
+	material.side = THREE.DoubleSide
+	// material.wireframe = true
+	var skybox = new THREE.Mesh( geometry, material );
 
-	var urlPrefix = urlPrefixes[2];
-	var urls = [ urlPrefix + "01.png", urlPrefix + "02.png",
-	    urlPrefix + "03.png", urlPrefix + "04.png",
-	    urlPrefix + "05.png", urlPrefix + "06.png" ];
-	var textureCube = THREE.ImageUtils.loadTextureCube( urls );
+	skybox.segments = segments;
+	skybox.pulseColors = [];
+	skybox.on = true
 
-	var shader = THREE.ShaderLib[ "cube" ];
-	shader.uniforms[ "tCube" ].value = textureCube;
+    
+	skybox.setColors = function(colorset) {
+		this.colorset = colorset;
+		var geometry = this.geometry;
+		var length = geometry.faces.length;
+		for(var i = 0; i < length; i++) {
+			var color = new THREE.Color(colorset[0]);
+			var hsl = color.getHSL();
+			//console.log(hsl.h, hsl.s, hsl.l + Math.random()*0.05)
+			geometry.faces[i].color.setHSL(hsl.h, hsl.s, hsl.l - Math.random()*0.07)
+		}
+		geometry.colorsNeedUpdate = true;
+	}
 
-	var material = new THREE.ShaderMaterial( {
+	skybox.setSolidColor = function(color) {
+		var geometry = this.geometry;
+		var length = geometry.faces.length;
+		for(var i = 0; i < length; i++) {
+			geometry.faces[i].color.set(color)
+		}
+		geometry.colorsNeedUpdate = true;
+	}
 
-		fragmentShader: shader.fragmentShader,
-		vertexShader: shader.vertexShader,
-		uniforms: shader.uniforms,
-		depthWrite: false,
-		side: THREE.BackSide
+	skybox.twinkle = function() {
+		this.setColors(this.colorset)
+	}
 
-	} )
+	skybox.pulseColor = function(color) {
+		this.pulseColors.push({color: color, start: null, duration: 1000})
+	}
 
-	// build the skybox Mesh 
-	skybox = new THREE.Mesh( new THREE.CubeGeometry( 100000, 100000, 100000 ), material );
-	skybox.materials = [material, 
-		new THREE.MeshBasicMaterial({color:0x000000, depthWrite:false, side:THREE.BackSide}), 
-		new THREE.MeshBasicMaterial({color:0xff00ff, depthWrite:false, side:THREE.BackSide}),
-		new THREE.MeshBasicMaterial({color:0xffff00, depthWrite:false, side:THREE.BackSide}),
-		new THREE.MeshBasicMaterial({color:0x00ffff, depthWrite:false, side:THREE.BackSide}),
-		] 
-	skybox.materialIndex = 0
+	skybox.toggle = function() {
+		if(this.on) {
+			this.on = false
+			this.setSolidColor('#000000')
+		} else {
+			this.on = true
+			this.twinkle()
+		}
+	}
+
+	skybox.update = function(time) {
+		if(this.pulseColors.length > 0) {
+			for(var p=0; p<this.pulseColors.length; p++) {
+				var pc = this.pulseColors[p];
+				if(pc.start == null) { pc.start = time; continue; }
+
+				var geometry = this.geometry;
+				var faces = geometry.faces
+				var length = faces.length;
+
+				if(!pc.last) { pc.last = 0 }
+				var elapsed = time - pc.start
+				var needed = Math.ceil(elapsed/pc.duration/length)
+				// console.log(pc.last);
+
+				for(var x=pc.last; x<pc.last+needed; x++) {
+				  faces[x].prevColor = faces[x].color
+		    	faces[x].color.set(pc.color)
+		    	geometry.colorsNeedUpdate = true;
+		    }
+		    pc.last += needed;
+		    if(pc.last >= length) { this.pulseColors.splice(p, 1) }
+		  }
+	  }
+	}
+
+	skybox.setColors(['#00aaff'])
+
+
 	// add it to the scene
 	sceneCube.add( skybox );
+
+	return skybox
 }
-
-
-// var skybox;
-// var skyboxUniforms;
-
-// var cameraCube, sceneCube;
-
-// function setupSkyboxScene(){
-// 	cameraCube = camera;
-// 	sceneCube = scene;	
-// }
-
-// function initSkybox( highres ){
-// 	// setLoadMessage("Loading internal stars")
-// 	var r = "img/";
-
-// 	r += "s_";
-
-// 	var urls = [ r + "px.jpg", r + "nx.jpg",
-// 				 r + "py.jpg", r + "ny.jpg",
-// 				 r + "pz.jpg", r + "nz.jpg" ];
-
-// 	var textureCube = THREE.ImageUtils.loadTextureCube( urls, undefined, null );
-// 	textureCube.anisotropy = maxAniso;
-// 	var shader   = THREE.ShaderLib[ "cube" ];
-// 	shader.uniforms[ "tCube" ].value = textureCube;
-// 	shader.uniforms[ "opacity" ] = { value: 1.0, type: "f" };
-// 	skyboxUniforms = shader.uniforms;
-// 	var skyboxMat = new THREE.ShaderMaterial( {
-// 		fragmentShader: shader.fragmentShader,
-// 		vertexShader: shader.vertexShader,
-// 		uniforms: shader.uniforms,
-// 		side: THREE.BackSide,
-// 		depthWrite: false,
-// 		depthTest: false,
-// 	} );
-
-// 	skybox = new THREE.Mesh( new THREE.CubeGeometry( 1000, 1000, 1000 ), skyboxMat );
-// 	skybox.scale.x = 2
-// 	skybox.scale.y = 2
-// 	skybox.scale.z = 2
-// 	sceneCube.add( skybox );
-// }
-
-// function updateSkybox(override){
-// 	cameraCube.eulerOrder = 'YXZ';
-// 	if( starModel )
-// 		cameraCube.rotation.copy( starModel.rotation.clone().negate());
-// 	else
-// 		cameraCube.rotation.copy( rotating.rotation.clone().negate() );
-// 	cameraCube.fov = constrain( camera.position.z * 20.0, 60, 70);
-// 	cameraCube.updateProjectionMatrix();
-
-// 	var skyboxBrightness = constrain(1.4 / camera.position.z, 0.0, 1.0);
-// 	skyboxUniforms["opacity"].value = skyboxBrightness;
-// 	skyboxUniforms["opacity"].value = 1.0;
-// }
-
-// function renderSkybox(){
-// 	// if( skyboxUniforms["opacity"].value > 0.001 )
-// 	renderer.render( sceneCube, cameraCube );
-// }
