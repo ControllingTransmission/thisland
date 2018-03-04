@@ -1,15 +1,13 @@
-# Chipzel GDC 2016 visuals
+# Bit and Box visuals by Controlling Transmission for GDC 2018 
 
-### [View the live demo on Github](https://controllingtransmission.github.io/thisland/)
+# How to use:
 
-### [Artist example soundtrack](http://chipzel.co.uk/album/spectra)
+Requires python server with SSL support for browser microphone support. 
+Run in code folder with command:
 
-Visuals for Chipzel's performance at the DNA Lounge Game Developer's Conference on 3/15/16
+    python server.py
 
-Requires SSL for microphone support. Run locally with `python server.py`
+Then open this URL in a browser on the same machine:
 
-## Show Images
+    https://localhost:9000/
 
-![Chipzel 1](show/CdphqqxWwAA48u6.jpg)
-![Chipzel 2](show/Cdpsp5MWoAEN0g7.jpg)
-![Chipzel 3](show/CdpbWUZXEAA5ZaQ.jpg)
